@@ -1,0 +1,7 @@
+D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Dom.Interfaces\bin\Debug\netcoreapp1.1\Rhetos.Dom.Interfaces.deps.json
+D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Dom.Interfaces\bin\Debug\netcoreapp1.1\Rhetos.Dom.Interfaces.dll
+D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Dom.Interfaces\bin\Debug\netcoreapp1.1\Rhetos.Dom.Interfaces.pdb
+D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Dom.Interfaces\obj\Debug\netcoreapp1.1\Rhetos.Dom.Interfaces.csprojResolveAssemblyReference.cache
+D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Dom.Interfaces\obj\Debug\netcoreapp1.1\Rhetos.Dom.Interfaces.AssemblyInfo.cs
+D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Dom.Interfaces\obj\Debug\netcoreapp1.1\Rhetos.Dom.Interfaces.dll
+D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Dom.Interfaces\obj\Debug\netcoreapp1.1\Rhetos.Dom.Interfaces.pdb

@@ -1,0 +1,8 @@
+D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Deployment\bin\Debug\netcoreapp2.0\Rhetos.Deployment.deps.json
+D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Deployment\bin\Debug\netcoreapp2.0\Rhetos.Deployment.dll
+D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Deployment\bin\Debug\netcoreapp2.0\Rhetos.Deployment.pdb
+D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Deployment\obj\Debug\netcoreapp2.0\Rhetos.Deployment.csprojResolveAssemblyReference.cache
+D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Deployment\obj\Debug\netcoreapp2.0\Rhetos.Deployment.AssemblyInfo.cs
+D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Deployment\obj\Debug\netcoreapp2.0\RemoveDepsFileConflicts.semaphore
+D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Deployment\obj\Debug\netcoreapp2.0\Rhetos.Deployment.dll
+D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Deployment\obj\Debug\netcoreapp2.0\Rhetos.Deployment.pdb
