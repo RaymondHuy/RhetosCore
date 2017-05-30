@@ -27,9 +27,9 @@ namespace Rhetos.Utilities
 {
     public class ConfigUtility
     {
-        private IConfiguration Configuration { get; set; }
+        private IConfigurationRoot Configuration { get; set; }
 
-        public ConfigUtility(IConfiguration configuration)
+        public ConfigUtility(IConfigurationRoot configuration)
         {
             Configuration = configuration;       
         }
@@ -42,13 +42,6 @@ namespace Rhetos.Utilities
         public string GetAppSetting(string key)
         {
             string settingValue = Configuration.GetValue<string>("AppSettings:" + key);
-
-            if (settingValue == null && !Paths.IsRhetosServer)
-            {
-                var setting = RhetosWebConfig.Value.AppSettings.Settings[key];
-                if (setting != null)
-                    settingValue = setting.Value;
-            }
 
             return settingValue;
         }

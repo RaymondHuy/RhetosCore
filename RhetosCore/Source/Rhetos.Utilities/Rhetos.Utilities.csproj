@@ -1,18 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <!-- this line -->
-    <RuntimeFrameworkVersion>2.0.0-preview1-001875-00</RuntimeFrameworkVersion>
   </PropertyGroup>
-
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="1.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="1.1.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="1.1.2" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.4.0-preview1-25305-02" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Rhetos.Dom.Interfaces\Rhetos.Dom.Interfaces.csproj" />
     <ProjectReference Include="..\Rhetos.Logging.Interfaces\Rhetos.Logging.Interfaces.csproj" />
   </ItemGroup>
-
 </Project>

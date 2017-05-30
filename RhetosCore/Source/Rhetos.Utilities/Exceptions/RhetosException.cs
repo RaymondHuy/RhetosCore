@@ -24,7 +24,6 @@ using System.Text;
 
 namespace Rhetos
 {
-    [global::System.Serializable]
     public abstract class RhetosException : Exception
     {
         /// <summary>

@@ -35,13 +35,13 @@ namespace Rhetos.Compiler
     {
         private readonly ILogger _performanceLogger;
         private readonly ILogger _logger;
-        private readonly Lazy<int> _errorReportLimit;
+        private readonly int _errorReportLimit;
 
-        public AssemblyGenerator(ILogProvider logProvider, IConfiguration configuration)
+        public AssemblyGenerator(ILogProvider logProvider, ConfigUtility configuration)
         {
             _performanceLogger = logProvider.GetLogger("Performance");
             _logger = logProvider.GetLogger("AssemblyGenerator");
-            _errorReportLimit = configuration.GetInt("AssemblyGenerator.ErrorReportLimit", 5);
+            _errorReportLimit = int.Parse(configuration.GetAppSetting("AssemblyGenerator.ErrorReportLimit"));
         }
 
         public Assembly Generate(IAssemblySource assemblySource, CompilerParameters compilerParameters)

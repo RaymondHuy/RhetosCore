@@ -30,13 +30,20 @@ namespace Rhetos.Utilities
 {
     public class MsSqlUtility : ISqlUtility
     {
+        private readonly SqlUtility _sqlUtility;
+
+        public MsSqlUtility(SqlUtility sqlUtility)
+        {
+            _sqlUtility = sqlUtility;
+        }
+
         /// <summary>
         /// Creates an SQL query that sets context_info connection variable to contain data about the user.
         /// The context_info variable can be used in SQL server to extract user info in certain situations such as logging trigger.
         /// </summary>
-        public static string SetUserContextInfoQuery(IUserInfo userInfo)
+        public string SetUserContextInfoQuery(IUserInfo userInfo)
         {
-            string text = SqlUtility.UserContextInfoText(userInfo);
+            string text = _sqlUtility.UserContextInfoText(userInfo);
             if (string.IsNullOrEmpty(text))
                 return "";
 

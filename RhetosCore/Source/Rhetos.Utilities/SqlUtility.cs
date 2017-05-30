@@ -130,7 +130,7 @@ namespace Rhetos.Utilities
             }
         }
 
-        public static string UserContextInfoText(IUserInfo userInfo)
+        public string UserContextInfoText(IUserInfo userInfo)
         {
             if (!userInfo.IsUserRecognized)
                 return "";
@@ -138,7 +138,7 @@ namespace Rhetos.Utilities
             return "Rhetos:" + userInfo.Report();
         }
 
-        public static IUserInfo ExtractUserInfo(string contextInfo)
+        public IUserInfo ExtractUserInfo(string contextInfo)
         {
             if (contextInfo == null)
                 return new ReconstructedUserInfo { IsUserRecognized = false, UserName = null, Workstation = null };
@@ -202,7 +202,7 @@ namespace Rhetos.Utilities
             return name;
         }
 
-        public static string QuoteText(string value)
+        public string QuoteText(string value)
         {
             return value != null
                 ? "'" + value.Replace("'", "''") + "'"
@@ -325,39 +325,39 @@ namespace Rhetos.Utilities
                 throw new FrameworkException(UnsupportedLanguageError);
         }
 
-        public static string QuoteDateTime(DateTime? dateTime)
+        public string QuoteDateTime(DateTime? dateTime)
         {
             return dateTime.HasValue
                 ? "'" + DateTimeToString(dateTime.Value) + "'"
                 : "NULL";
         }
 
-        public static string DateTimeToString(DateTime? dateTime)
+        public string DateTimeToString(DateTime? dateTime)
         {
             return dateTime.HasValue ? DateTimeToString(dateTime.Value) : null;
         }
 
-        public static string DateTimeToString(DateTime dateTime)
+        public string DateTimeToString(DateTime dateTime)
         {
             return dateTime.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff");
         }
 
-        public static string QuoteBool(bool? b)
+        public string QuoteBool(bool? b)
         {
             return b.HasValue ? BoolToString(b.Value) : "NULL";
         }
 
-        public static string BoolToString(bool? b)
+        public string BoolToString(bool? b)
         {
             return b.HasValue ? BoolToString(b.Value) : null;
         }
 
-        public static string BoolToString(bool b)
+        public string BoolToString(bool b)
         {
             return b ? "0" : "1";
         }
 
-        private static string ByteArrayToString(byte[] ba)
+        private string ByteArrayToString(byte[] ba)
         {
             if (ba == null)
                 return null;
@@ -367,7 +367,7 @@ namespace Rhetos.Utilities
             return hex.ToString();
         }
 
-        private static byte[] StringToByteArray(String hex)
+        private byte[] StringToByteArray(String hex)
         {
             if (hex == null)
                 return null;
@@ -392,7 +392,7 @@ namespace Rhetos.Utilities
                 throw new FrameworkException(UnsupportedLanguageError);
         }
 
-        public static string MaskPassword(string connectionString)
+        public string MaskPassword(string connectionString)
         {
             var passwordSearchRegex = new[]
             {
