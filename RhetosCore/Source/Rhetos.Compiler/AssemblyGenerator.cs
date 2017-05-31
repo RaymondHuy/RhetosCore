@@ -37,11 +37,11 @@ namespace Rhetos.Compiler
         private readonly ILogger _logger;
         private readonly int _errorReportLimit;
 
-        public AssemblyGenerator(ILogProvider logProvider, ConfigUtility configuration)
+        public AssemblyGenerator(ILogProvider logProvider)
         {
             _performanceLogger = logProvider.GetLogger("Performance");
             _logger = logProvider.GetLogger("AssemblyGenerator");
-            _errorReportLimit = int.Parse(configuration.GetAppSetting("AssemblyGenerator.ErrorReportLimit"));
+            _errorReportLimit = int.Parse(ConfigUtility.GetAppSetting("AssemblyGenerator.ErrorReportLimit"));
         }
 
         public Assembly Generate(IAssemblySource assemblySource, CompilerParameters compilerParameters)
@@ -95,12 +95,12 @@ namespace Rhetos.Compiler
             var report = new StringBuilder();
             report.Append(errors.Count + " errors while compiling '" + Path.GetFileName(filePath) + "'");
 
-            if (errors.Count > _errorReportLimit.Value)
-                report.AppendLine(". The first " + _errorReportLimit.Value + " errors:");
+            if (errors.Count > _errorReportLimit)
+                report.AppendLine(". The first " + _errorReportLimit + " errors:");
             else
                 report.AppendLine(":");
 
-            foreach (var error in errors.Take(_errorReportLimit.Value))
+            foreach (var error in errors.Take(_errorReportLimit))
             {
                 report.AppendLine();
                 report.AppendLine(error.ErrorText);
@@ -108,7 +108,7 @@ namespace Rhetos.Compiler
                     report.AppendLine(ScriptPositionReporting.ReportPosition(generatedCode, error.Line, error.Column, filePath));
             }
 
-            if (errors.Count() > _errorReportLimit.Value)
+            if (errors.Count() > _errorReportLimit)
             {
                 report.AppendLine();
                 report.AppendLine("...");

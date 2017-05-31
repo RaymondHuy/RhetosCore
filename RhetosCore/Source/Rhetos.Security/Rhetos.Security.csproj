@@ -1,20 +1,18 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="1.1.1" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.4.0-preview1-25305-02" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Rhetos.Compiler.Interfaces\Rhetos.Compiler.Interfaces.csproj" />
+    <ProjectReference Include="..\Rhetos.Dom.Interfaces\Rhetos.Dom.Interfaces.csproj" />
     <ProjectReference Include="..\Rhetos.Dsl.Interfaces\Rhetos.Dsl.Interfaces.csproj" />
     <ProjectReference Include="..\Rhetos.Extensibility.Interfaces\Rhetos.Extensibility.Interfaces.csproj" />
     <ProjectReference Include="..\Rhetos.Logging.Interfaces\Rhetos.Logging.Interfaces.csproj" />
     <ProjectReference Include="..\Rhetos.Persistence.Interfaces\Rhetos.Persistence.Interfaces.csproj" />
+    <ProjectReference Include="..\Rhetos.Processing.Interfaces\Rhetos.Processing.Interfaces.csproj" />
+    <ProjectReference Include="..\Rhetos.Processing\Rhetos.Processing.csproj" />
+    <ProjectReference Include="..\Rhetos.Security.Interfaces\Rhetos.Security.Interfaces.csproj" />
     <ProjectReference Include="..\Rhetos.Utilities\Rhetos.Utilities.csproj" />
   </ItemGroup>
 

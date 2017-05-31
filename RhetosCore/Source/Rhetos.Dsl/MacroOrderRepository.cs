@@ -42,14 +42,12 @@ namespace Rhetos.Dsl
         ISqlExecuter _sqlExecuter;
         ILogger _loadOrderLogger;
         ILogger _saveOrderLogger;
-        SqlUtility _sqlUtility;
 
-        public MacroOrderRepository(ISqlExecuter sqlExecuter, ILogProvider logProvider, SqlUtility sqlUtility)
+        public MacroOrderRepository(ISqlExecuter sqlExecuter, ILogProvider logProvider)
         {
             _sqlExecuter = sqlExecuter;
             _loadOrderLogger = logProvider.GetLogger("MacroRepositoryLoad");
             _saveOrderLogger = logProvider.GetLogger("MacroRepositorySave");
-            _sqlUtility = sqlUtility;
         }
 
         /// <summary>
@@ -94,7 +92,7 @@ namespace Rhetos.Dsl
 ELSE
 	UPDATE Rhetos.MacroEvaluatorOrder SET EvaluatorOrder = {1} WHERE EvaluatorName = {0};
 ",
-                _sqlUtility.QuoteText(macroOrder.EvaluatorName),
+                SqlUtility.QuoteText(macroOrder.EvaluatorName),
                 macroOrder.EvaluatorOrder.ToString(CultureInfo.InvariantCulture));
         }
     }

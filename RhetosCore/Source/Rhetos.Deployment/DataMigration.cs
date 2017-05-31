@@ -38,9 +38,9 @@ namespace Rhetos.Deployment
         protected readonly ILogger _logger;
         protected readonly ILogger _deployPackagesLogger;
         protected readonly IDataMigrationScriptsProvider _scriptsProvider;
-        protected readonly IConfiguration _configuration;
+        protected readonly IRhetosConfiguration _configuration;
 
-        public DataMigration(ISqlExecuter sqlExecuter, ILogProvider logProvider, IDataMigrationScriptsProvider scriptsProvider, IConfiguration configuration)
+        public DataMigration(ISqlExecuter sqlExecuter, ILogProvider logProvider, IDataMigrationScriptsProvider scriptsProvider, IRhetosConfiguration configuration)
         {
             _sqlExecuter = sqlExecuter;
             _logger = logProvider.GetLogger("DataMigration");

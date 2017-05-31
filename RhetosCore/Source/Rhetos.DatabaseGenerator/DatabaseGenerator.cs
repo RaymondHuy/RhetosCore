@@ -43,9 +43,6 @@ namespace Rhetos.DatabaseGenerator
         protected readonly ILogger _deployPackagesLogger;
         protected readonly ILogger _performanceLogger;
         protected readonly DatabaseGeneratorOptions _options;
-        protected readonly SqlUtility _sqlUtility;
-        protected readonly ConceptApplicationUtility _conceptApplicationUtility;
-        protected readonly SqlResource _sqlResource;
 
         protected bool DatabaseUpdated = false;
 
@@ -57,10 +54,7 @@ namespace Rhetos.DatabaseGenerator
             IPluginsContainer<IConceptDatabaseDefinition> plugins,
             IConceptApplicationRepository conceptApplicationRepository,
             ILogProvider logProvider,
-            SqlUtility _sqlUtility,
-            DatabaseGeneratorOptions options,
-            ConceptApplicationUtility conceptApplicationUtility,
-            SqlResource sqlResource)
+            DatabaseGeneratorOptions options)
         {
             _sqlExecuter = sqlExecuter;
             _dslModel = dslModel;
@@ -71,8 +65,6 @@ namespace Rhetos.DatabaseGenerator
             _deployPackagesLogger = logProvider.GetLogger("DeployPackages");
             _performanceLogger = logProvider.GetLogger("Performance");
             _options = options;
-            _conceptApplicationUtility = conceptApplicationUtility;
-            _sqlResource = sqlResource;
         }
 
         public void UpdateDatabaseStructure()
@@ -94,7 +86,7 @@ namespace Rhetos.DatabaseGenerator
 
                 var newApplications = CreateNewApplications(oldApplications);
                 _performanceLogger.Write(stopwatch, "DatabaseGenerator: Created new concept applications.");
-                _conceptApplicationUtility.CheckKeyUniqueness(newApplications, "created");
+                ConceptApplicationRepository.CheckKeyUniqueness(newApplications, "created");
                 _performanceLogger.Write(stopwatch, "DatabaseGenerator: Verify new concept applications' integrity.");
                 newApplications = TrimEmptyApplications(newApplications);
                 _performanceLogger.Write(stopwatch, "DatabaseGenerator: Removed unused concept applications.");
@@ -607,7 +599,7 @@ namespace Rhetos.DatabaseGenerator
 
             // Oracle must commit metadata changes before modifying next database object, to ensure metadata consistency if next DDL command fails
             // (Oracle db automatically commits changes on DDL commands, so the previous DDL command has already been committed).
-            yield return _sqlResource.Get("DatabaseGenerator_CommitAfterDDL");
+            yield return Sql.Get("DatabaseGenerator_CommitAfterDDL");
         }
 
         protected List<string> ApplyChangesToDatabase_Unchanged(List<NewConceptApplication> toBeInserted, List<NewConceptApplication> newApplications, List<ConceptApplication> oldApplications)
@@ -647,7 +639,7 @@ namespace Rhetos.DatabaseGenerator
             _conceptsLogger.Trace("{0} {1}, ID={2}.{3}{4}",
                 action,
                 conceptApplication.GetConceptApplicationKey(),
-                _sqlUtility.GuidToString(conceptApplication.Id),
+                SqlUtility.GuidToString(conceptApplication.Id),
                 additionalInfo != null ? " " : null,
                 additionalInfo != null ? additionalInfo() : null);
         }

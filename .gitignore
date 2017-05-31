@@ -1,2 +1,5 @@
-/RhetosCore/Source/**/bin/Debug/**/**
-/RhetosCore/Source/**/obj/Debug/**/**
+
+/RhetosCore/Source/*.*/obj
+/RhetosCore/Source/*.*/bin
+/RhetosCore/Source/*/bin
+/RhetosCore/Source/*/obj

@@ -39,7 +39,6 @@ namespace Rhetos.Persistence
         private readonly ICodeGenerator _codeGenerator;
         private readonly IPluginsContainer<IConceptMapping> _plugins;
         private readonly ILogger _performanceLogger;
-        private readonly SqlUtility _sqlUtility;
 
         public EntityFrameworkMappingGenerator(
             ICodeGenerator codeGenerator,
@@ -52,14 +51,14 @@ namespace Rhetos.Persistence
         }
         private string GetProviderManifestToken()
         {
-            using (SqlConnection sc = new SqlConnection(_sqlUtility.ConnectionString))
+            using (SqlConnection sc = new SqlConnection(SqlUtility.ConnectionString))
             {
                 sc.Open();
                 string providerManifestToken = MsSqlUtility.QueryForManifestToken(sc);
                 sc.Close();
                 return providerManifestToken;
             }
-        });
+        }
 
         public void Generate()
         {

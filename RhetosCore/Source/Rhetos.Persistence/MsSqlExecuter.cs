@@ -33,7 +33,6 @@ namespace Rhetos.Persistence
 {
     public class MsSqlExecuter : ISqlExecuter
     {
-        private readonly SqlUtility _sqlUtility;
         private readonly IUserInfo _userInfo;
         private readonly ILogger _logger;
         private readonly ILogger _performanceLogger;
@@ -42,8 +41,8 @@ namespace Rhetos.Persistence
         /// <summary>
         /// This constructor is typically used in deployment time, when persistence transaction does not exist.
         /// </summary>
-        public MsSqlExecuter(SqlUtility sqlUtility, ILogProvider logProvider, IUserInfo userInfo)
-            : this(sqlUtility, logProvider, userInfo, null)
+        public MsSqlExecuter(ILogProvider logProvider, IUserInfo userInfo)
+            : this(logProvider, userInfo, null)
         {
         }
 
@@ -51,9 +50,8 @@ namespace Rhetos.Persistence
         /// This constructor is typically used in run-time, when persistence transaction is active, in order to execute
         /// the SQL queries in the same transaction.
         /// </summary>
-        public MsSqlExecuter(SqlUtility sqlUtility, ILogProvider logProvider, IUserInfo userInfo, IPersistenceTransaction persistenceTransaction)
+        public MsSqlExecuter(ILogProvider logProvider, IUserInfo userInfo, IPersistenceTransaction persistenceTransaction)
         {
-            _sqlUtility = sqlUtility;
             _userInfo = userInfo;
             _logger = logProvider.GetLogger("MsSqlExecuter");
             _performanceLogger = logProvider.GetLogger("Performance");
@@ -139,7 +137,7 @@ namespace Rhetos.Persistence
         {
             bool createOwnConnection = _persistenceTransaction == null || !useTransaction;
 
-            var connection = createOwnConnection ? new SqlConnection(_sqlUtility.ConnectionString) : _persistenceTransaction.Connection;
+            var connection = createOwnConnection ? new SqlConnection(SqlUtility.ConnectionString) : _persistenceTransaction.Connection;
 
             try
             {
@@ -152,7 +150,7 @@ namespace Rhetos.Persistence
                         connection.Open();
 
                     command = connection.CreateCommand();
-                    command.CommandTimeout = _sqlUtility.SqlCommandTimeout;
+                    command.CommandTimeout = SqlUtility.SqlCommandTimeout;
                     if (createOwnConnection)
                     {
                         if (useTransaction)
@@ -170,7 +168,7 @@ namespace Rhetos.Persistence
                 }
                 catch (SqlException ex)
                 {
-                    SqlConnectionStringBuilder csb = new SqlConnectionStringBuilder(_sqlUtility.ConnectionString);
+                    SqlConnectionStringBuilder csb = new SqlConnectionStringBuilder(SqlUtility.ConnectionString);
                     string msg = string.Format(CultureInfo.InvariantCulture,
                             "Could not connect to server '{0}', database '{1}' using {2}.",
                                 csb.DataSource,

@@ -25,13 +25,13 @@ using System.Text;
 
 namespace Rhetos.Utilities
 {
-    public class ConfigUtility
+    public static class ConfigUtility
     {
-        private IConfigurationRoot Configuration { get; set; }
+        private static IConfigurationRoot Configuration;
 
-        public ConfigUtility(IConfigurationRoot configuration)
+        public static void SetConfiguration(IConfigurationRoot configuration)
         {
-            Configuration = configuration;       
+            Configuration = configuration;
         }
         /// <summary>
         /// Use "Configuration.GetInt" or "Configuration.GetBool" instead.
@@ -39,7 +39,7 @@ namespace Rhetos.Utilities
         /// When used in another application (for example, DeployPackages.exe),
         /// the application's ".config" file can be used to override the default settings from the web.config.
         /// </summary>
-        public string GetAppSetting(string key)
+        public static string GetAppSetting(string key)
         {
             string settingValue = Configuration.GetValue<string>("AppSettings:" + key);
 
@@ -48,12 +48,12 @@ namespace Rhetos.Utilities
 
         private const string ServerConnectionStringName = "ServerConnectionString";
 
-        public string GetConnectionStringProvider()
+        public static string GetConnectionStringProvider()
         {
             return Configuration.GetValue<string>(ServerConnectionStringName + ":Provider");
         }
 
-        public string GetConnectionStringValue()
+        public static string GetConnectionStringValue()
         {
             return Configuration.GetValue<string>(ServerConnectionStringName + ":Value");
         }

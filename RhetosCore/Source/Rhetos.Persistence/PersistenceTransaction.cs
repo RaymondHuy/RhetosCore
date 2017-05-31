@@ -31,7 +31,6 @@ namespace Rhetos.Persistence
         private readonly ILogger _logger;
         private readonly string _connectionString;
         private readonly IUserInfo _userInfo;
-        private readonly SqlUtility _sqlUtility;
 
         private DbConnection _connection;
         private DbTransaction _transaction;
@@ -40,10 +39,10 @@ namespace Rhetos.Persistence
         private int _persistenceTransactionId;
         static int _counter = 0;
 
-        public PersistenceTransaction(ILogProvider logProvider, SqlUtility _sqlUtility, IUserInfo userInfo)
+        public PersistenceTransaction(ILogProvider logProvider, IUserInfo userInfo)
         {
             _logger = logProvider.GetLogger(GetType().Name);
-            _connectionString = _sqlUtility.ConnectionString; ;
+            _connectionString = SqlUtility.ConnectionString; ;
             _userInfo = userInfo;
             _persistenceTransactionId = Interlocked.Increment(ref _counter);
         }

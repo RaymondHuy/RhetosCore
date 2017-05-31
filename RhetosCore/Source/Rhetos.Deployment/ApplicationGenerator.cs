@@ -43,7 +43,6 @@ namespace Rhetos.Deployment
         private readonly DataMigration _dataMigration;
         private readonly IDatabaseGenerator _databaseGenerator;
         private readonly IDslScriptsProvider _dslScriptsLoader;
-        private readonly SqlUtility _sqlUtility;
 
         public ApplicationGenerator(
             ILogProvider logProvider,
@@ -54,8 +53,7 @@ namespace Rhetos.Deployment
             DatabaseCleaner databaseCleaner,
             DataMigration dataMigration,
             IDatabaseGenerator databaseGenerator,
-            IDslScriptsProvider dslScriptsLoader,
-            SqlUtility sqlUtility)
+            IDslScriptsProvider dslScriptsLoader)
         {
             _deployPackagesLogger = logProvider.GetLogger("DeployPackages");
             _performanceLogger = logProvider.GetLogger("Performance");
@@ -67,12 +65,11 @@ namespace Rhetos.Deployment
             _dataMigration = dataMigration;
             _databaseGenerator = databaseGenerator;
             _dslScriptsLoader = dslScriptsLoader;
-            _sqlUtility = sqlUtility;
         }
 
         public void ExecuteGenerators(bool deployDatabaseOnly)
         {
-            _deployPackagesLogger.Trace("SQL connection string: " + _sqlUtility.MaskPassword(_sqlUtility.ConnectionString));
+            _deployPackagesLogger.Trace("SQL connection string: " + SqlUtility.MaskPassword(SqlUtility.ConnectionString));
             ValidateDbConnection();
 
             _deployPackagesLogger.Trace("Preparing Rhetos database.");
@@ -149,7 +146,7 @@ namespace Rhetos.Deployment
 
         private void PrepareRhetosDatabase()
         {
-            string rhetosDatabaseScriptResourceName = "Rhetos.Deployment.RhetosDatabase." + _sqlUtility.DatabaseLanguage + ".sql";
+            string rhetosDatabaseScriptResourceName = "Rhetos.Deployment.RhetosDatabase." + SqlUtility.DatabaseLanguage + ".sql";
             var resourceStream = GetType().Assembly.GetManifestResourceStream(rhetosDatabaseScriptResourceName);
             if (resourceStream == null)
                 throw new FrameworkException("Cannot find resource '" + rhetosDatabaseScriptResourceName + "'.");
@@ -182,8 +179,8 @@ namespace Rhetos.Deployment
 
             sql.AddRange(_dslScriptsLoader.DslScripts.Select(dslScript => Sql.Format(
                 "DslScriptManager_Insert",
-                _sqlUtility.QuoteText(dslScript.Name),
-                _sqlUtility.QuoteText(dslScript.Script))));
+                SqlUtility.QuoteText(dslScript.Name),
+                SqlUtility.QuoteText(dslScript.Script))));
 
             _sqlExecuter.ExecuteSql(sql);
 

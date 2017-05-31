@@ -30,20 +30,13 @@ namespace Rhetos.Utilities
 {
     public class MsSqlUtility : ISqlUtility
     {
-        private readonly SqlUtility _sqlUtility;
-
-        public MsSqlUtility(SqlUtility sqlUtility)
-        {
-            _sqlUtility = sqlUtility;
-        }
-
         /// <summary>
         /// Creates an SQL query that sets context_info connection variable to contain data about the user.
         /// The context_info variable can be used in SQL server to extract user info in certain situations such as logging trigger.
         /// </summary>
-        public string SetUserContextInfoQuery(IUserInfo userInfo)
+        public static string SetUserContextInfoQuery(IUserInfo userInfo)
         {
-            string text = _sqlUtility.UserContextInfoText(userInfo);
+            string text = SqlUtility.UserContextInfoText(userInfo);
             if (string.IsNullOrEmpty(text))
                 return "";
 
@@ -184,9 +177,9 @@ namespace Rhetos.Utilities
             var info = interpretedException.Info;
             return
                 info != null
-                && (info.GetValueOrDefault("Constraint") as string) == "Unique"
-                && (info.GetValueOrDefault("Table") as string) == table
-                && (info.GetValueOrDefault("ConstraintName") as string) == constraintName;
+                && (info.RheExtensionGetValueOrDefault("Constraint") as string) == "Unique"
+                && (info.RheExtensionGetValueOrDefault("Table") as string) == table
+                && (info.RheExtensionGetValueOrDefault("ConstraintName") as string) == constraintName;
         }
 
         public static bool IsReferenceErrorOnInsertUpdate(RhetosException interpretedException, string referencedTable, string referencedColumn, string constraintName)
@@ -196,11 +189,11 @@ namespace Rhetos.Utilities
             var info = interpretedException.Info;
             return
                 info != null
-                && (info.GetValueOrDefault("Constraint") as string) == "Reference"
-                && ((info.GetValueOrDefault("Action") as string) == "INSERT" || (info.GetValueOrDefault("Action") as string) == "UPDATE")
-                && (info.GetValueOrDefault("ReferencedTable") as string) == referencedTable
-                && (info.GetValueOrDefault("ReferencedColumn") as string) == referencedColumn
-                && (info.GetValueOrDefault("ConstraintName") as string) == constraintName;
+                && (info.RheExtensionGetValueOrDefault("Constraint") as string) == "Reference"
+                && ((info.RheExtensionGetValueOrDefault("Action") as string) == "INSERT" || (info.RheExtensionGetValueOrDefault("Action") as string) == "UPDATE")
+                && (info.RheExtensionGetValueOrDefault("ReferencedTable") as string) == referencedTable
+                && (info.RheExtensionGetValueOrDefault("ReferencedColumn") as string) == referencedColumn
+                && (info.RheExtensionGetValueOrDefault("ConstraintName") as string) == constraintName;
         }
         public static bool IsReferenceErrorOnDelete(RhetosException interpretedException, string dependentTable, string dependentColumn, string constraintName)
         {
@@ -209,11 +202,11 @@ namespace Rhetos.Utilities
             var info = interpretedException.Info;
             return
                 info != null
-                && (info.GetValueOrDefault("Constraint") as string) == "Reference"
-                && (info.GetValueOrDefault("Action") as string) == "DELETE"
-                && (info.GetValueOrDefault("DependentTable") as string) == dependentTable
-                && (info.GetValueOrDefault("DependentColumn") as string) == dependentColumn
-                && (info.GetValueOrDefault("ConstraintName") as string) == constraintName;
+                && (info.RheExtensionGetValueOrDefault("Constraint") as string) == "Reference"
+                && (info.RheExtensionGetValueOrDefault("Action") as string) == "DELETE"
+                && (info.RheExtensionGetValueOrDefault("DependentTable") as string) == dependentTable
+                && (info.RheExtensionGetValueOrDefault("DependentColumn") as string) == dependentColumn
+                && (info.RheExtensionGetValueOrDefault("ConstraintName") as string) == constraintName;
         }
 
         public static SqlVersion GetSqlVersion(DbConnection connection)

@@ -6,6 +6,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Rhetos.Dom.Interfaces\Rhetos.Dom.Interfaces.csproj" />
+    <ProjectReference Include="..\Rhetos.Logging.Interfaces\Rhetos.Logging.Interfaces.csproj" />
+    <ProjectReference Include="..\Rhetos.Utilities\Rhetos.Utilities.csproj" />
   </ItemGroup>
 
 </Project>

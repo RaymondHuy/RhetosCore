@@ -25,7 +25,7 @@ using System.Text;
 
 namespace Rhetos.Deployment
 {
-    public class LoggerForNuget : NuGet.Common.ILogger
+    public class LoggerForNuget : NuGet.ILogger
     {
         ILogger _logger;
 
@@ -34,7 +34,7 @@ namespace Rhetos.Deployment
             _logger = logProvider.GetLogger("NuGet");
         }
 
-        Dictionary<MessageLevel, EventType> logLevels = new Dictionary<NuGet.MessageLevel, EventType>
+        Dictionary<NuGet.MessageLevel, EventType> logLevels = new Dictionary<NuGet.MessageLevel, EventType>
         {
             { NuGet.MessageLevel.Debug, EventType.Trace },
             { NuGet.MessageLevel.Info, EventType.Trace },
@@ -51,7 +51,7 @@ namespace Rhetos.Deployment
             _logger.Write(logLevel, message, args);
         }
 
-        public FileConflictResolution ResolveFileConflict(string message)
+        public NuGet.FileConflictResolution ResolveFileConflict(string message)
         {
             _logger.Error(message);
             return NuGet.FileConflictResolution.OverwriteAll;
