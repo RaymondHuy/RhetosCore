@@ -1,6 +1,0 @@
-D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Extensibility.Interfaces\bin\Debug\netcoreapp1.1\Rhetos.Extensibility.Interfaces.deps.json
-D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Extensibility.Interfaces\bin\Debug\netcoreapp1.1\Rhetos.Extensibility.Interfaces.dll
-D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Extensibility.Interfaces\bin\Debug\netcoreapp1.1\Rhetos.Extensibility.Interfaces.pdb
-D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Extensibility.Interfaces\obj\Debug\netcoreapp1.1\Rhetos.Extensibility.Interfaces.AssemblyInfo.cs
-D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Extensibility.Interfaces\obj\Debug\netcoreapp1.1\Rhetos.Extensibility.Interfaces.dll
-D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Extensibility.Interfaces\obj\Debug\netcoreapp1.1\Rhetos.Extensibility.Interfaces.pdb

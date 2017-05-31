@@ -1,4 +1,0 @@
-D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Extensibility.Interfaces\bin\Debug\netcoreapp2.0\Rhetos.Extensibility.Interfaces.deps.json
-D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Extensibility.Interfaces\obj\Debug\netcoreapp2.0\Rhetos.Extensibility.Interfaces.csprojResolveAssemblyReference.cache
-D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Extensibility.Interfaces\obj\Debug\netcoreapp2.0\Rhetos.Extensibility.Interfaces.AssemblyInfo.cs
-D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Extensibility.Interfaces\obj\Debug\netcoreapp2.0\RemoveDepsFileConflicts.semaphore

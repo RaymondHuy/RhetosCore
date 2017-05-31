@@ -1,8 +1,0 @@
-D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Logging.Interfaces\bin\Debug\netcoreapp2.0\Rhetos.Logging.Interfaces.deps.json
-D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Logging.Interfaces\bin\Debug\netcoreapp2.0\Rhetos.Logging.Interfaces.dll
-D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Logging.Interfaces\bin\Debug\netcoreapp2.0\Rhetos.Logging.Interfaces.pdb
-D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Logging.Interfaces\obj\Debug\netcoreapp2.0\Rhetos.Logging.Interfaces.AssemblyInfo.cs
-D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Logging.Interfaces\obj\Debug\netcoreapp2.0\Rhetos.Logging.Interfaces.dll
-D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Logging.Interfaces\obj\Debug\netcoreapp2.0\Rhetos.Logging.Interfaces.pdb
-D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Logging.Interfaces\obj\Debug\netcoreapp2.0\RemoveDepsFileConflicts.semaphore
-D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Logging.Interfaces\obj\Debug\netcoreapp2.0\Rhetos.Logging.Interfaces.csprojResolveAssemblyReference.cache

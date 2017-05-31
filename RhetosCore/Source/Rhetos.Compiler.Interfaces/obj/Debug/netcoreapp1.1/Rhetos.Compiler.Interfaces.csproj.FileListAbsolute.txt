@@ -1,6 +1,0 @@
-D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Compiler.Interfaces\bin\Debug\netcoreapp1.1\Rhetos.Compiler.Interfaces.deps.json
-D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Compiler.Interfaces\bin\Debug\netcoreapp1.1\Rhetos.Compiler.Interfaces.dll
-D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Compiler.Interfaces\bin\Debug\netcoreapp1.1\Rhetos.Compiler.Interfaces.pdb
-D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Compiler.Interfaces\obj\Debug\netcoreapp1.1\Rhetos.Compiler.Interfaces.AssemblyInfo.cs
-D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Compiler.Interfaces\obj\Debug\netcoreapp1.1\Rhetos.Compiler.Interfaces.dll
-D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Compiler.Interfaces\obj\Debug\netcoreapp1.1\Rhetos.Compiler.Interfaces.pdb

@@ -1,7 +1,0 @@
-D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Extensibility\bin\Debug\netcoreapp2.0\Rhetos.Extensibility.deps.json
-D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Extensibility\bin\Debug\netcoreapp2.0\Rhetos.Extensibility.Interfaces.dll
-D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Extensibility\bin\Debug\netcoreapp2.0\Rhetos.Logging.Interfaces.dll
-D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Extensibility\bin\Debug\netcoreapp2.0\Rhetos.Utilities.dll
-D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Extensibility\bin\Debug\netcoreapp2.0\Rhetos.Logging.Interfaces.pdb
-D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Extensibility\obj\Debug\netcoreapp2.0\Rhetos.Extensibility.csprojResolveAssemblyReference.cache
-D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Extensibility\obj\Debug\netcoreapp2.0\Rhetos.Extensibility.AssemblyInfo.cs
