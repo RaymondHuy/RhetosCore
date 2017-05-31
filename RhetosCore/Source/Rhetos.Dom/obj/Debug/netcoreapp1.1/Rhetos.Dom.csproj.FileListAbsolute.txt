@@ -1,7 +1,0 @@
-D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Dom\bin\Debug\netcoreapp1.1\Rhetos.Dom.deps.json
-D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Dom\bin\Debug\netcoreapp1.1\Rhetos.Dom.dll
-D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Dom\bin\Debug\netcoreapp1.1\Rhetos.Dom.pdb
-D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Dom\obj\Debug\netcoreapp1.1\Rhetos.Dom.csprojResolveAssemblyReference.cache
-D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Dom\obj\Debug\netcoreapp1.1\Rhetos.Dom.AssemblyInfo.cs
-D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Dom\obj\Debug\netcoreapp1.1\Rhetos.Dom.dll
-D:\Project\RhetosCore\RhetosCore\Source\Rhetos.Dom\obj\Debug\netcoreapp1.1\Rhetos.Dom.pdb
