@@ -1,22 +1,31 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Rhetos.Configuration.Autofac\Rhetos.Configuration.Autofac.csproj" />
+    <PackageReference Include="Autofac" Version="4.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Rhetos.Compiler.Interfaces\Rhetos.Compiler.Interfaces.csproj" />
+    <ProjectReference Include="..\Rhetos.Compiler\Rhetos.Compiler.csproj" />
     <ProjectReference Include="..\Rhetos.DatabaseGenerator.Interfaces\Rhetos.DatabaseGenerator.Interfaces.csproj" />
-    <ProjectReference Include="..\Rhetos.Deployment.Interfaces\Rhetos.Deployment.Interfaces.csproj" />
+    <ProjectReference Include="..\Rhetos.DatabaseGenerator\Rhetos.DatabaseGenerator.csproj" />
     <ProjectReference Include="..\Rhetos.Deployment\Rhetos.Deployment.csproj" />
     <ProjectReference Include="..\Rhetos.Dom.Interfaces\Rhetos.Dom.Interfaces.csproj" />
+    <ProjectReference Include="..\Rhetos.Dom\Rhetos.Dom.csproj" />
     <ProjectReference Include="..\Rhetos.Dsl.Interfaces\Rhetos.Dsl.Interfaces.csproj" />
     <ProjectReference Include="..\Rhetos.Dsl\Rhetos.Dsl.csproj" />
     <ProjectReference Include="..\Rhetos.Extensibility.Interfaces\Rhetos.Extensibility.Interfaces.csproj" />
     <ProjectReference Include="..\Rhetos.Extensibility\Rhetos.Extensibility.csproj" />
     <ProjectReference Include="..\Rhetos.Logging.Interfaces\Rhetos.Logging.Interfaces.csproj" />
     <ProjectReference Include="..\Rhetos.Logging\Rhetos.Logging.csproj" />
+    <ProjectReference Include="..\Rhetos.Persistence.Interfaces\Rhetos.Persistence.Interfaces.csproj" />
+    <ProjectReference Include="..\Rhetos.Persistence\Rhetos.Persistence.csproj" />
+    <ProjectReference Include="..\Rhetos.Processing.Interfaces\Rhetos.Processing.Interfaces.csproj" />
+    <ProjectReference Include="..\Rhetos.Processing\Rhetos.Processing.csproj" />
     <ProjectReference Include="..\Rhetos.Security.Interfaces\Rhetos.Security.Interfaces.csproj" />
     <ProjectReference Include="..\Rhetos.Security\Rhetos.Security.csproj" />
     <ProjectReference Include="..\Rhetos.Utilities\Rhetos.Utilities.csproj" />
