@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Composition" Version="1.1.0-preview1-25305-02" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Source\Rhetos.Processing.Interfaces\Rhetos.Processing.Interfaces.csproj" />
+    <ProjectReference Include="..\..\..\Source\Rhetos.Utilities\Rhetos.Utilities.csproj" />
+    <ProjectReference Include="..\Rhetos.Dom.DefaultConcepts.Interfaces\Rhetos.Dom.DefaultConcepts.Interfaces.csproj" />
+  </ItemGroup>
+
+</Project>

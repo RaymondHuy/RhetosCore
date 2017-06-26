@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Composition" Version="1.1.0-preview1-25305-02" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Source\Rhetos.Compiler.Interfaces\Rhetos.Compiler.Interfaces.csproj" />
+    <ProjectReference Include="..\..\..\Source\Rhetos.DatabaseGenerator.Interfaces\Rhetos.DatabaseGenerator.Interfaces.csproj" />
+    <ProjectReference Include="..\..\..\Source\Rhetos.Dsl.Interfaces\Rhetos.Dsl.Interfaces.csproj" />
+    <ProjectReference Include="..\..\..\Source\Rhetos.Extensibility.Interfaces\Rhetos.Extensibility.Interfaces.csproj" />
+    <ProjectReference Include="..\..\..\Source\Rhetos.Utilities\Rhetos.Utilities.csproj" />
+    <ProjectReference Include="..\Rhetos.Dsl.DefaultConcepts\Rhetos.Dsl.DefaultConcepts.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Sql.MsSql.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Sql.MsSql.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Sql.Oracle.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Sql.Oracle.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Sql.MsSql.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Sql.MsSql.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Sql.Oracle.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Sql.Oracle.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

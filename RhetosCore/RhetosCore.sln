@@ -55,6 +55,20 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{9122CE
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rhetos.Configuration.Autofac", "Source\Rhetos.Configuration.Autofac\Rhetos.Configuration.Autofac.csproj", "{8893A7FA-4131-4A18-AAA8-E587DD7EA6B9}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CommonConcepts", "CommonConcepts", "{19468F90-4114-41E7-9A21-128D784F1809}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rhetos.Dom.DefaultConcepts.Interfaces", "CommonConcepts\Plugins\Rhetos.Dom.DefaultConcepts.Interfaces\Rhetos.Dom.DefaultConcepts.Interfaces.csproj", "{F1D820DA-20AF-472D-A01E-C9B1903490C7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rhetos.Dom.DefaultConcepts", "CommonConcepts\Plugins\Rhetos.Dom.DefaultConcepts\Rhetos.Dom.DefaultConcepts.csproj", "{6F6D8F4F-6001-4B39-ACEC-346C07752CB4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rhetos.DatabaseGenerator.DefaultConcepts", "CommonConcepts\Plugins\Rhetos.DatabaseGenerator.DefaultConcepts\Rhetos.DatabaseGenerator.DefaultConcepts.csproj", "{266A4648-0935-40E5-A392-B7542AC05844}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rhetos.Dsl.DefaultConcepts", "CommonConcepts\Plugins\Rhetos.Dsl.DefaultConcepts\Rhetos.Dsl.DefaultConcepts.csproj", "{4226BCC3-C103-4ED7-B3EC-D802348B76C1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rhetos.Processing.DefaultCommands.Interfaces", "CommonConcepts\Plugins\Rhetos.Processing.DefaultCommands.Interfaces\Rhetos.Processing.DefaultCommands.Interfaces.csproj", "{9C4A7652-AB9D-474C-ADB1-A993C8DCAAFA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rhetos.Processing.DefaultCommands", "CommonConcepts\Plugins\Rhetos.Processing.DefaultCommands\Rhetos.Processing.DefaultCommands.csproj", "{DB63286C-01C1-4B07-AD8E-857AB10F1A9C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -153,6 +167,30 @@ Global
 		{8893A7FA-4131-4A18-AAA8-E587DD7EA6B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8893A7FA-4131-4A18-AAA8-E587DD7EA6B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8893A7FA-4131-4A18-AAA8-E587DD7EA6B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1D820DA-20AF-472D-A01E-C9B1903490C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1D820DA-20AF-472D-A01E-C9B1903490C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1D820DA-20AF-472D-A01E-C9B1903490C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1D820DA-20AF-472D-A01E-C9B1903490C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F6D8F4F-6001-4B39-ACEC-346C07752CB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F6D8F4F-6001-4B39-ACEC-346C07752CB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F6D8F4F-6001-4B39-ACEC-346C07752CB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F6D8F4F-6001-4B39-ACEC-346C07752CB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{266A4648-0935-40E5-A392-B7542AC05844}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{266A4648-0935-40E5-A392-B7542AC05844}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{266A4648-0935-40E5-A392-B7542AC05844}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{266A4648-0935-40E5-A392-B7542AC05844}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4226BCC3-C103-4ED7-B3EC-D802348B76C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4226BCC3-C103-4ED7-B3EC-D802348B76C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4226BCC3-C103-4ED7-B3EC-D802348B76C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4226BCC3-C103-4ED7-B3EC-D802348B76C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C4A7652-AB9D-474C-ADB1-A993C8DCAAFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C4A7652-AB9D-474C-ADB1-A993C8DCAAFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C4A7652-AB9D-474C-ADB1-A993C8DCAAFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C4A7652-AB9D-474C-ADB1-A993C8DCAAFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB63286C-01C1-4B07-AD8E-857AB10F1A9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB63286C-01C1-4B07-AD8E-857AB10F1A9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB63286C-01C1-4B07-AD8E-857AB10F1A9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB63286C-01C1-4B07-AD8E-857AB10F1A9C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -181,5 +219,11 @@ Global
 		{F3BC9BB0-2440-494E-86BF-5F65E726E864} = {BEFE2B9E-2E5D-48B2-93C4-8E073F8101B8}
 		{1761F8EE-2951-491F-A26D-3FA47FC415C8} = {B7216265-011A-4DA9-9C3A-2435404199CA}
 		{8893A7FA-4131-4A18-AAA8-E587DD7EA6B9} = {9122CE99-4F8B-4685-A040-9245801DFB60}
+		{F1D820DA-20AF-472D-A01E-C9B1903490C7} = {19468F90-4114-41E7-9A21-128D784F1809}
+		{6F6D8F4F-6001-4B39-ACEC-346C07752CB4} = {19468F90-4114-41E7-9A21-128D784F1809}
+		{266A4648-0935-40E5-A392-B7542AC05844} = {19468F90-4114-41E7-9A21-128D784F1809}
+		{4226BCC3-C103-4ED7-B3EC-D802348B76C1} = {19468F90-4114-41E7-9A21-128D784F1809}
+		{9C4A7652-AB9D-474C-ADB1-A993C8DCAAFA} = {19468F90-4114-41E7-9A21-128D784F1809}
+		{DB63286C-01C1-4B07-AD8E-857AB10F1A9C} = {19468F90-4114-41E7-9A21-128D784F1809}
 	EndGlobalSection
 EndGlobal

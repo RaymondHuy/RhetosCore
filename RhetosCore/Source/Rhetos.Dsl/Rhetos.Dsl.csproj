@@ -19,4 +19,28 @@
     <ProjectReference Include="..\Rhetos.Utilities\Rhetos.Utilities.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Sql.MsSql.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Sql.MsSql.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Sql.Oracle.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Sql.Oracle.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Sql.MsSql.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Sql.MsSql.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Sql.Oracle.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Sql.Oracle.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>

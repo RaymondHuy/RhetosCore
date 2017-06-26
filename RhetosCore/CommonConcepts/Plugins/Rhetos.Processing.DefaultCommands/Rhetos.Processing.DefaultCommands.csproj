@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="4.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Source\Rhetos.Compiler.Interfaces\Rhetos.Compiler.Interfaces.csproj" />
+    <ProjectReference Include="..\..\..\Source\Rhetos.DatabaseGenerator.Interfaces\Rhetos.DatabaseGenerator.Interfaces.csproj" />
+    <ProjectReference Include="..\..\..\Source\Rhetos.Dom.Interfaces\Rhetos.Dom.Interfaces.csproj" />
+    <ProjectReference Include="..\..\..\Source\Rhetos.Dsl.Interfaces\Rhetos.Dsl.Interfaces.csproj" />
+    <ProjectReference Include="..\..\..\Source\Rhetos.Extensibility.Interfaces\Rhetos.Extensibility.Interfaces.csproj" />
+    <ProjectReference Include="..\..\..\Source\Rhetos.Logging.Interfaces\Rhetos.Logging.Interfaces.csproj" />
+    <ProjectReference Include="..\..\..\Source\Rhetos.Persistence.Interfaces\Rhetos.Persistence.Interfaces.csproj" />
+    <ProjectReference Include="..\..\..\Source\Rhetos.Processing.Interfaces\Rhetos.Processing.Interfaces.csproj" />
+    <ProjectReference Include="..\..\..\Source\Rhetos.Security.Interfaces\Rhetos.Security.Interfaces.csproj" />
+    <ProjectReference Include="..\..\..\Source\Rhetos.Utilities\Rhetos.Utilities.csproj" />
+    <ProjectReference Include="..\Rhetos.Dom.DefaultConcepts.Interfaces\Rhetos.Dom.DefaultConcepts.Interfaces.csproj" />
+    <ProjectReference Include="..\Rhetos.Dom.DefaultConcepts\Rhetos.Dom.DefaultConcepts.csproj" />
+    <ProjectReference Include="..\Rhetos.Dsl.DefaultConcepts\Rhetos.Dsl.DefaultConcepts.csproj" />
+    <ProjectReference Include="..\Rhetos.Processing.DefaultCommands.Interfaces\Rhetos.Processing.DefaultCommands.Interfaces.csproj" />
+  </ItemGroup>
+
+</Project>
