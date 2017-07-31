@@ -98,7 +98,7 @@ namespace {0}._Helper
             codeBuilder.AddReferencesFromDependency(typeof(ISet<>)); // Includes reference to System.
             codeBuilder.AddReferencesFromDependency(typeof(RuntimeBinderException)); // Includes reference to Microsoft.CSharp.
             codeBuilder.AddReferencesFromDependency(typeof(System.Data.Common.DbDataReader)); // Includes reference to System.Data.
-            codeBuilder.AddReferencesFromDependency(typeof(System.Data.DataRowExtensions)); // Includes reference to System.Data.DataSetExtensions.
+            //codeBuilder.AddReferencesFromDependency(typeof(System.Data.DataRowExtensions)); // Includes reference to System.Data.DataSetExtensions.
             codeBuilder.AddReferencesFromDependency(typeof(System.Xml.Serialization.XmlSerializer)); // Includes reference to System.Xml.
             codeBuilder.AddReferencesFromDependency(typeof(System.Xml.Linq.XElement)); // Includes reference to System.Xml.Linq.
             // Commonly used Rhetos classes:

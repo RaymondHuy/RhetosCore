@@ -44,21 +44,19 @@ namespace Rhetos.Extensibility
         /// <summary>Find and registers Autofac modules that are implemented as plugins.</summary>
         public static void FindAndRegisterModules(ContainerBuilder builder)
         {
-            //var modules = MefPluginScanner.FindPlugins(builder, typeof(Module));
+            var modules = MefPluginScanner.FindPlugins(builder, typeof(Module));
 
-            //foreach (var module in modules)
-            //{
-            //    InitializationLogging.Logger.Trace(() => "Registering module: " + module.Type.FullName);
-            //    builder.RegisterModule((Module)Activator.CreateInstance(module.Type));
-            //}
-            throw new NotImplementedException();
+            foreach (var module in modules)
+            {
+                InitializationLogging.Logger.Trace(() => "Registering module: " + module.Type.FullName);
+                builder.RegisterModule((Module)Activator.CreateInstance(module.Type));
+            }
         }
 
         /// <summary>Deletes the plugins cache to allow scanning of the new generated dlls.</summary>
         public static void ClearCache()
         {
-            //MefPluginScanner.ClearCache();
-            throw new NotImplementedException();
+            MefPluginScanner.ClearCache();
         }
 
         #endregion
@@ -71,9 +69,8 @@ namespace Rhetos.Extensibility
         /// </summary>
         public static void FindAndRegisterPlugins<TPluginInterface>(ContainerBuilder builder)
         {
-            //var matchingPlugins = MefPluginScanner.FindPlugins(builder, typeof(TPluginInterface));
-            //RegisterPlugins(builder, matchingPlugins, typeof(TPluginInterface));
-            throw new NotImplementedException();
+            var matchingPlugins = MefPluginScanner.FindPlugins(builder, typeof(TPluginInterface));
+            RegisterPlugins(builder, matchingPlugins, typeof(TPluginInterface));
         }
 
         /// <summary>
@@ -87,13 +84,12 @@ namespace Rhetos.Extensibility
         /// </param>
         public static void FindAndRegisterPlugins<TPluginInterface>(ContainerBuilder builder, Type genericImplementationBase)
         {
-            //var matchingPlugins = MefPluginScanner.FindPlugins(builder, typeof(TPluginInterface));
+            var matchingPlugins = MefPluginScanner.FindPlugins(builder, typeof(TPluginInterface));
 
-            //foreach (var plugin in matchingPlugins)
-            //    ExtractGenericPluginImplementsMetadata(plugin, genericImplementationBase);
-            
-            //RegisterPlugins(builder, matchingPlugins, typeof(TPluginInterface));
-            throw new NotImplementedException();
+            foreach (var plugin in matchingPlugins)
+                ExtractGenericPluginImplementsMetadata(plugin, genericImplementationBase);
+
+            RegisterPlugins(builder, matchingPlugins, typeof(TPluginInterface));
         }
 
         /// <summary>

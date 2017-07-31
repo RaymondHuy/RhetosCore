@@ -17,6 +17,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+using Microsoft.Extensions.Caching.Memory;
 using Rhetos.Extensibility;
 using Rhetos.Logging;
 using Rhetos.Security;
@@ -24,7 +25,6 @@ using Rhetos.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Caching;
 
 namespace Rhetos.Dom.DefaultConcepts
 {
@@ -32,14 +32,16 @@ namespace Rhetos.Dom.DefaultConcepts
     {
         private readonly ILogger _logger;
         private readonly Lazy<AuthorizationDataLoader> _authorizationDataReader;
-        private readonly ObjectCache _cache = MemoryCache.Default;
+        private readonly IMemoryCache _cache;
 
         public AuthorizationDataCache(
             ILogProvider logProvider,
-            Lazy<AuthorizationDataLoader> authorizationDataReader)
+            Lazy<AuthorizationDataLoader> authorizationDataReader,
+            IMemoryCache cache)
         {
             _logger = logProvider.GetLogger(GetType().Name);
             _authorizationDataReader = authorizationDataReader;
+            _cache = cache;
         }
 
         // This property must not be static, and AuthorizationDataCache must be registered as InstancePerLifetimeScope,
@@ -48,12 +50,12 @@ namespace Rhetos.Dom.DefaultConcepts
 
         public static void ClearCache()
         {
-            var cache = MemoryCache.Default;
-            var deleteKeys = cache.Select(item => item.Key)
-                .Where(key => key.StartsWith("AuthorizationDataCache.", StringComparison.Ordinal))
-                .ToList();
-            foreach (string key in deleteKeys)
-                cache.Remove(key);
+            //var cache = MemoryCache.Default;
+            //var deleteKeys = cache.Select(item => item.Key)
+            //    .Where(key => key.StartsWith("AuthorizationDataCache.", StringComparison.Ordinal))
+            //    .ToList();
+            //foreach (string key in deleteKeys)
+            //    cache.Remove(key);
         }
 
         /// <summary>
@@ -61,18 +63,18 @@ namespace Rhetos.Dom.DefaultConcepts
         /// </summary>
         public void ClearCachePrincipals(IEnumerable<IPrincipal> principals)
         {
-            CsUtility.Materialize(ref principals);
-            _logger.Trace(() => "ClearCachePrincipals: " + string.Join(", ", principals.Select(p => p.Name + " " + p.ID.ToString())) + ".");
+            //CsUtility.Materialize(ref principals);
+            //_logger.Trace(() => "ClearCachePrincipals: " + string.Join(", ", principals.Select(p => p.Name + " " + p.ID.ToString())) + ".");
 
-            var deleteKeys =
-                principals.Select(principal => "AuthorizationDataCache.Principal." + principal.Name.ToLower())
-                .Concat(principals.Select(principal => "AuthorizationDataCache.PrincipalRoles." + principal.Name.ToLower() + "." + principal.ID.ToString()))
-                .Concat(principals.Select(principal => "AuthorizationDataCache.PrincipalPermissions." + principal.Name.ToLower() + "." + principal.ID.ToString()))
-                .Distinct();
+            //var deleteKeys =
+            //    principals.Select(principal => "AuthorizationDataCache.Principal." + principal.Name.ToLower())
+            //    .Concat(principals.Select(principal => "AuthorizationDataCache.PrincipalRoles." + principal.Name.ToLower() + "." + principal.ID.ToString()))
+            //    .Concat(principals.Select(principal => "AuthorizationDataCache.PrincipalPermissions." + principal.Name.ToLower() + "." + principal.ID.ToString()))
+            //    .Distinct();
 
-            var cache = MemoryCache.Default;
-            foreach (string key in deleteKeys)
-                cache.Remove(key);
+            //var cache = MemoryCache.Default;
+            //foreach (string key in deleteKeys)
+            //    cache.Remove(key);
         }
 
         /// <summary>
@@ -80,18 +82,18 @@ namespace Rhetos.Dom.DefaultConcepts
         /// </summary>
         public void ClearCacheRoles(IEnumerable<Guid> roleIds)
         {
-            CsUtility.Materialize(ref roleIds);
-            _logger.Trace(() => "ClearCacheRoles: " + string.Join(", ", roleIds) + ".");
+            //CsUtility.Materialize(ref roleIds);
+            //_logger.Trace(() => "ClearCacheRoles: " + string.Join(", ", roleIds) + ".");
 
-            var deleteKeys =
-                roleIds.Distinct()
-                .Select(roleId => "AuthorizationDataCache.RoleRoles." + roleId.ToString())
-                .Concat(roleIds.Select(roleId => "AuthorizationDataCache.RolePermissions." + roleId.ToString()))
-                .Concat(new[] { "AuthorizationDataCache.Roles" });
+            //var deleteKeys =
+            //    roleIds.Distinct()
+            //    .Select(roleId => "AuthorizationDataCache.RoleRoles." + roleId.ToString())
+            //    .Concat(roleIds.Select(roleId => "AuthorizationDataCache.RolePermissions." + roleId.ToString()))
+            //    .Concat(new[] { "AuthorizationDataCache.Roles" });
 
-            var cache = MemoryCache.Default;
-            foreach (string key in deleteKeys)
-                cache.Remove(key);
+            //var cache = MemoryCache.Default;
+            //foreach (string key in deleteKeys)
+            //    cache.Remove(key);
         }
 
         private static double? _defaultExpirationSeconds = null;
