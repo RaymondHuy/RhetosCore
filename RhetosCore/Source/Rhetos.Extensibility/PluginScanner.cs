@@ -22,8 +22,7 @@ using Rhetos.Logging;
 using Rhetos.Utilities;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition.Hosting;
-using System.ComponentModel.Composition.ReflectionModel;
+using System.Composition;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -32,7 +31,7 @@ using System.Text;
 
 namespace Rhetos.Extensibility
 {
-    internal static class MefPluginScanner
+    internal static class PluginScanner
     {
         /// <summary>
         /// The key is FullName of the plugin's export type (it is usually the interface it implements).
@@ -90,45 +89,45 @@ namespace Rhetos.Extensibility
         private static MultiDictionary<string, PluginInfo> LoadPlugins(List<string> assemblies)
         {
             var stopwatch = Stopwatch.StartNew();
-
-            var assemblyCatalogs = assemblies.Select(a => new AssemblyCatalog(a));
-            var container = new CompositionContainer(new AggregateCatalog(assemblyCatalogs));
-            var mefPlugins = container.Catalog.Parts
-                .Select(part => new
-                {
-                    PluginType = ReflectionModelServices.GetPartType(part).Value,
-                    part.ExportDefinitions
-                })
-                .SelectMany(part =>
-                    part.ExportDefinitions.Select(exportDefinition => new
-                    {
-                        exportDefinition.ContractName,
-                        exportDefinition.Metadata,
-                        part.PluginType
-                    }));
-
             var pluginsByExport = new MultiDictionary<string, PluginInfo>();
-            int pluginsCount = 0;
-            foreach (var mefPlugin in mefPlugins)
+            foreach (var assembly in assemblies)
             {
-                Console.WriteLine(mefPlugin.ContractName);
-                Console.WriteLine(mefPlugin.Metadata.GetType());
-                Console.WriteLine(mefPlugin.PluginType.GetType());
-
-                pluginsCount++;
-                pluginsByExport.Add(
-                    mefPlugin.ContractName,
-                    new PluginInfo
+                var types = Assembly.LoadFile(assembly).GetTypes();
+                foreach (var type in types)
+                {
+                    string contractName = String.Empty;
+                    var plugin = new PluginInfo();
+                    var exportAttribute = (ExportAttribute)type.GetCustomAttribute(typeof(ExportAttribute));
+                    if (exportAttribute != null)
                     {
-                        Type = mefPlugin.PluginType,
-                        Metadata = mefPlugin.Metadata.ToDictionary(m => m.Key, m => m.Value)
-                    });
+                        plugin.Metadata = new Dictionary<string, object>();
+                        if (exportAttribute.ContractType != null)
+                        {
+                            contractName = exportAttribute.ContractType.FullName;
+                            plugin.Type = type;
+
+                            if (type.GetCustomAttribute(typeof(ExportMetadataAttribute)) != null)
+                            {
+                                var exportMetadata = (ExportMetadataAttribute)type.GetCustomAttribute(typeof(ExportMetadataAttribute));
+                                plugin.Metadata.Add(exportMetadata.Name, exportMetadata.Value);
+                            }
+                            plugin.Metadata.Add("ExportTypeIdentity", exportAttribute.ContractType);
+                        }
+                        else
+                        {
+                            contractName = type.FullName;
+                            plugin.Type = type;
+                            plugin.Metadata.Add("ExportTypeIdentity", exportAttribute.ContractType);
+                        }
+                        pluginsByExport.Add(contractName, plugin);
+                    }
+                }
             }
 
             foreach (var pluginsGroup in pluginsByExport)
                 SortByDependency(pluginsGroup.Value);
 
-            InitializationLogging.PerformanceLogger.Write(stopwatch, "MefPluginScanner: Loaded plugins (" + pluginsCount + ").");
+            InitializationLogging.PerformanceLogger.Write(stopwatch, "MefPluginScanner: Loaded plugins (" + pluginsByExport.Count + ").");
             return pluginsByExport;
         }
 

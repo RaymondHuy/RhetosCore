@@ -44,7 +44,7 @@ namespace Rhetos.Extensibility
         /// <summary>Find and registers Autofac modules that are implemented as plugins.</summary>
         public static void FindAndRegisterModules(ContainerBuilder builder)
         {
-            var modules = MefPluginScanner.FindPlugins(builder, typeof(Module));
+            var modules = PluginScanner.FindPlugins(builder, typeof(Module));
 
             foreach (var module in modules)
             {
@@ -56,7 +56,7 @@ namespace Rhetos.Extensibility
         /// <summary>Deletes the plugins cache to allow scanning of the new generated dlls.</summary>
         public static void ClearCache()
         {
-            MefPluginScanner.ClearCache();
+            PluginScanner.ClearCache();
         }
 
         #endregion
@@ -69,7 +69,7 @@ namespace Rhetos.Extensibility
         /// </summary>
         public static void FindAndRegisterPlugins<TPluginInterface>(ContainerBuilder builder)
         {
-            var matchingPlugins = MefPluginScanner.FindPlugins(builder, typeof(TPluginInterface));
+            var matchingPlugins = PluginScanner.FindPlugins(builder, typeof(TPluginInterface));
             RegisterPlugins(builder, matchingPlugins, typeof(TPluginInterface));
         }
 
@@ -84,7 +84,7 @@ namespace Rhetos.Extensibility
         /// </param>
         public static void FindAndRegisterPlugins<TPluginInterface>(ContainerBuilder builder, Type genericImplementationBase)
         {
-            var matchingPlugins = MefPluginScanner.FindPlugins(builder, typeof(TPluginInterface));
+            var matchingPlugins = PluginScanner.FindPlugins(builder, typeof(TPluginInterface));
 
             foreach (var plugin in matchingPlugins)
                 ExtractGenericPluginImplementsMetadata(plugin, genericImplementationBase);
