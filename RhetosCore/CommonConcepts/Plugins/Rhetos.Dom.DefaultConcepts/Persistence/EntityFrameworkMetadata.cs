@@ -22,7 +22,6 @@ using Rhetos.Persistence;
 using Rhetos.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity.Core.Metadata.Edm;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;

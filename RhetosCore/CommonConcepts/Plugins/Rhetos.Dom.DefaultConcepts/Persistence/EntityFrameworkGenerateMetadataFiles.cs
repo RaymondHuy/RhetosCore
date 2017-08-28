@@ -24,8 +24,6 @@ using System;
 using System.Collections.Generic;
 using System.Composition;
 using System.Data.Common;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.IO;
