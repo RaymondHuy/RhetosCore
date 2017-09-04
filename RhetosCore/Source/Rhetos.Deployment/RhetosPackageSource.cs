@@ -29,7 +29,7 @@ using System.Xml.Serialization;
 namespace Rhetos.Deployment
 {
     [DebuggerDisplay("{ProvidedLocation}")]
-    public class PackageSource
+    public class RhetosPackageSource
     {
         /// <summary>
         /// Available location options:
@@ -37,7 +37,7 @@ namespace Rhetos.Deployment
         /// 2. Local folder or network folder with nuget packages.
         /// 3. Package project's source folder (unpacked, useful for package development).
         /// </summary>
-        public PackageSource(string location)
+        public RhetosPackageSource(string location)
         {
             if (string.IsNullOrEmpty(location))
                 throw new UserException(string.Format(

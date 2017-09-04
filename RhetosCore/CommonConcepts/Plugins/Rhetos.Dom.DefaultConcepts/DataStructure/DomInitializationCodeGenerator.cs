@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.Composition;
 using System.Linq;
 
+//Important
 namespace Rhetos.Dom.DefaultConcepts
 {
     [Export(typeof(IConceptCodeGenerator))]
@@ -63,7 +64,7 @@ namespace Rhetos.Dom.DefaultConcepts
 
             if (bool.Parse(ConfigUtility.GetAppSetting("EntityFramework.UseDatabaseNullSemantics")) == true)
                 codeBuilder.InsertCode("this.Configuration.UseDatabaseNullSemantics = true;\r\n            ", EntityFrameworkContextInitializeTag);
-
+            
             // Types used in the preceding code snippet:
             codeBuilder.AddReferencesFromDependency(typeof(Autofac.Module)); // Includes a reference to Autofac.dll.
             codeBuilder.AddReferencesFromDependency(typeof(Rhetos.Extensibility.INamedPlugins<>));
@@ -75,12 +76,12 @@ namespace Rhetos.Dom.DefaultConcepts
             codeBuilder.AddReferencesFromDependency(typeof(Rhetos.Logging.ILogProvider));
             codeBuilder.AddReferencesFromDependency(typeof(Rhetos.Security.IWindowsSecurity));
             codeBuilder.AddReferencesFromDependency(typeof(Rhetos.Utilities.SqlUtility));
-            codeBuilder.AddReferencesFromDependency(typeof(System.Data.Entity.DbContext));
-            codeBuilder.AddReferencesFromDependency(typeof(System.Data.Entity.SqlServer.SqlProviderServices));
-            codeBuilder.AddReferencesFromDependency(typeof(System.Data.Entity.Core.EntityClient.EntityConnection));
-            codeBuilder.AddReferencesFromDependency(typeof(System.Data.Entity.Core.Metadata.Edm.MetadataWorkspace));
-            codeBuilder.AddReferencesFromDependency(typeof(System.Data.Entity.Infrastructure.IObjectContextAdapter));
-            codeBuilder.AddReferencesFromDependency(typeof(System.Data.Entity.Core.Objects.ObjectStateEntry));
+            codeBuilder.AddReferencesFromDependency(typeof(Microsoft.EntityFrameworkCore.DbContext));
+            //codeBuilder.AddReferencesFromDependency(typeof(System.Data.Entity.SqlServer.SqlProviderServices));
+            //codeBuilder.AddReferencesFromDependency(typeof(System.Data.Entity.Core.EntityClient.EntityConnection));
+            //codeBuilder.AddReferencesFromDependency(typeof(System.Data.Entity.Core.Metadata.Edm.MetadataWorkspace));
+            //codeBuilder.AddReferencesFromDependency(typeof(System.Data.Entity.Infrastructure.IObjectContextAdapter));
+            //codeBuilder.AddReferencesFromDependency(typeof(System.Data.Entity.Core.Objects.ObjectStateEntry));
             codeBuilder.AddReferencesFromDependency(typeof(Rhetos.Persistence.IPersistenceCache));
             codeBuilder.AddReferencesFromDependency(typeof(Rhetos.Persistence.IPersistenceTransaction));
         }

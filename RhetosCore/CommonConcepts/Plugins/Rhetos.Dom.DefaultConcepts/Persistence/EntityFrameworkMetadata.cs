@@ -30,10 +30,11 @@ using System.Text;
 
 namespace Rhetos.Dom.DefaultConcepts.Persistence
 {
+    //Important
     public class EntityFrameworkMetadata
     {
         private readonly ILogger _performanceLogger;
-        private MetadataWorkspace _metadataWorkspace;
+        //private MetadataWorkspace _metadataWorkspace;
         private bool _initialized;
         private object _initializationLock = new object();
 
@@ -42,39 +43,39 @@ namespace Rhetos.Dom.DefaultConcepts.Persistence
             _performanceLogger = logProvider.GetLogger("Performance");
         }
 
-        public MetadataWorkspace MetadataWorkspace
-        {
-            get
-            {
-                if (!_initialized)
-                    lock (_initializationLock)
-                        if (!_initialized)
-                        {
-                            var sw = Stopwatch.StartNew();
+        //public MetadataWorkspace MetadataWorkspace
+        //{
+        //    get
+        //    {
+        //        if (!_initialized)
+        //            lock (_initializationLock)
+        //                if (!_initialized)
+        //                {
+        //                    var sw = Stopwatch.StartNew();
 
-                            var filesFromCode = SegmentsFromCode.Select(segment => segment.FileName)
-                                .Select(fileName => Path.Combine(Paths.GeneratedFolder, fileName))
-                                .ToList();
+        //                    var filesFromCode = SegmentsFromCode.Select(segment => segment.FileName)
+        //                        .Select(fileName => Path.Combine(Paths.GeneratedFolder, fileName))
+        //                        .ToList();
 
-                            if (File.Exists(filesFromCode.First()))
-                            {
-                                var filesFromGenerator = EntityFrameworkMapping.ModelFiles
-                                    .Select(fileName => Path.Combine(Paths.GeneratedFolder, fileName));
-                                var loadFiles = filesFromGenerator.Concat(filesFromCode)
-                                    .Where(file => File.Exists(file))
-                                    .ToList();
-                                _metadataWorkspace = new MetadataWorkspace(loadFiles, new Assembly[] { });
-                                _performanceLogger.Write(sw, "EntityFrameworkMetadata: Load EDM files.");
-                            }
-                            else
-                                throw new FrameworkException("Entity Framework metadata files are not yet generated.");
+        //                    if (File.Exists(filesFromCode.First()))
+        //                    {
+        //                        var filesFromGenerator = EntityFrameworkMapping.ModelFiles
+        //                            .Select(fileName => Path.Combine(Paths.GeneratedFolder, fileName));
+        //                        var loadFiles = filesFromGenerator.Concat(filesFromCode)
+        //                            .Where(file => File.Exists(file))
+        //                            .ToList();
+        //                        _metadataWorkspace = new MetadataWorkspace(loadFiles, new Assembly[] { });
+        //                        _performanceLogger.Write(sw, "EntityFrameworkMetadata: Load EDM files.");
+        //                    }
+        //                    else
+        //                        throw new FrameworkException("Entity Framework metadata files are not yet generated.");
 
-                            _initialized = true;
-                        }
+        //                    _initialized = true;
+        //                }
 
-                return _metadataWorkspace;
-            }
-        }
+        //        return _metadataWorkspace;
+        //    }
+        //}
 
         internal class Segment
         {

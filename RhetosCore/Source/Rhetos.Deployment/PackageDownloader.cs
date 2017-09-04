@@ -26,8 +26,19 @@ using System.IO;
 using System.Linq;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
-using Ionic.Zip;
+using NuGet.Versioning;
+using NuGet.Packaging;
+using System.IO.Compression;
+using NuGet.Packaging.Core;
+using NuGet.Protocol.Core.Types;
+using NuGet.Protocol;
+using NuGet.Configuration;
+using NuGet.PackageManagement;
+using NuGet.Resolver;
+using NuGet.ProjectManagement;
+using System.Threading;
 
+//Important
 namespace Rhetos.Deployment
 {
     /// <summary>
@@ -66,8 +77,8 @@ namespace Rhetos.Deployment
         {
             var sw = Stopwatch.StartNew();
             var installedPackages = new List<InstalledPackage>();
-            installedPackages.Add(new InstalledPackage("Rhetos", SystemUtility.GetRhetosVersion(), new List<PackageRequest>(), Paths.RhetosServerRootPath,
-                new PackageRequest { Id = "Rhetos", VersionsRange = "", Source = "", RequestedBy = "Rhetos framework" }, "."));
+            //installedPackages.Add(new InstalledPackage("Rhetos", SystemUtility.GetRhetosVersion(), new List<PackageRequest>(), Paths.RhetosServerRootPath,
+            //    new PackageRequest { Id = "Rhetos", VersionsRange = "", Source = "", RequestedBy = "Rhetos framework" }, "."));
 
             var binFileSyncer = new FileSyncer(_logProvider);
             binFileSyncer.AddDestinations(Paths.PluginsFolder, Paths.ResourcesFolder); // Even if there are no packages, those folders must be created and emptied.
@@ -84,10 +95,11 @@ namespace Rhetos.Deployment
                         var installedPackage = GetPackage(request, binFileSyncer);
                         ValidatePackage(installedPackage, request, installedPackages);
                         installedPackages.Add(installedPackage);
-                        newDependencies.AddRange(installedPackage.Dependencies);
+                        //Nuget Client has already downloaded dependencies.
+                        //newDependencies.AddRange(installedPackage.Dependencies);
                     }
                 }
-                packageRequests = newDependencies;
+                //packageRequests = newDependencies;
             }
 
             DeleteObsoletePackages(installedPackages);
@@ -116,15 +128,15 @@ namespace Rhetos.Deployment
             var existing = installedPackages.FirstOrDefault(op => string.Equals(op.Id, request.Id, StringComparison.OrdinalIgnoreCase));
             if (existing == null)
                 return false;
-
-            var requestVersionsRange = VersionUtility.ParseVersionSpec(request.VersionsRange);
-            var existingVersion = SemanticVersion.Parse(existing.Version);
-
-            if (!requestVersionsRange.Satisfies(existingVersion))
-                DependencyError(string.Format(
-                    "Incompatible package version '{0}, version {1}, requested by {2}' conflicts with previously downloaded package '{3}, version {4}, requested by {5} ({6})'.",
-                    request.Id, request.VersionsRange ?? "not specified", request.RequestedBy,
-                    existing.Id, existing.Version, existing.Request.RequestedBy, existing.Request.VersionsRange));
+            
+            //var requestVersionsRange = NuGetVersion.Parse(request.VersionsRange);
+            //var existingVersion = SemanticVersion.Parse(existing.Version);
+            //requestVersionsRange.
+            //if (!requestVersionsRange.Satisfies(existingVersion))
+            //    DependencyError(string.Format(
+            //        "Incompatible package version '{0}, version {1}, requested by {2}' conflicts with previously downloaded package '{3}, version {4}, requested by {5} ({6})'.",
+            //        request.Id, request.VersionsRange ?? "not specified", request.RequestedBy,
+            //        existing.Id, existing.Version, existing.Request.RequestedBy, existing.Request.VersionsRange));
 
             return true;
         }
@@ -152,15 +164,15 @@ namespace Rhetos.Deployment
                 + string.Concat(packageSources.Select(source => "\r\n" + source.ProcessedLocation)));
         }
 
-        private IEnumerable<PackageSource> SelectPackageSources(PackageRequest request)
+        private IEnumerable<RhetosPackageSource> SelectPackageSources(PackageRequest request)
         {
             if (request.Source != null)
-                return new List<PackageSource> { new PackageSource(request.Source) };
+                return new List<RhetosPackageSource> { new RhetosPackageSource(request.Source) };
             else
                 return _deploymentConfiguration.PackageSources;
         }
 
-        private InstalledPackage TryGetPackage(PackageSource source, PackageRequest request, FileSyncer binFileSyncer)
+        private InstalledPackage TryGetPackage(RhetosPackageSource source, PackageRequest request, FileSyncer binFileSyncer)
         {
             return TryGetPackageFromUnpackedSourceFolder(source, request, binFileSyncer)
                 ?? TryGetPackageFromLegacyZipPackage(source, request, binFileSyncer)
@@ -175,12 +187,12 @@ namespace Rhetos.Deployment
                         "Package ID '{0}' at location '{1}' does not match package ID '{2}' requested from {3}.",
                         installedPackage.Id, installedPackage.Source, request.Id, request.RequestedBy));
 
-            if (request.VersionsRange != null)
-                if (!VersionUtility.ParseVersionSpec(request.VersionsRange).Satisfies(SemanticVersion.Parse(installedPackage.Version)))
-                    DependencyError(string.Format(
-                        "Incompatible package version '{0}, version {1}'. Version {2} is requested from {3}'.",
-                        installedPackage.Id, installedPackage.Version,
-                        request.VersionsRange, request.RequestedBy));
+            //if (request.VersionsRange != null)
+            //    if (!VersionUtility.ParseVersionSpec(request.VersionsRange).Satisfies(SemanticVersion.Parse(installedPackage.Version)))
+            //        DependencyError(string.Format(
+            //            "Incompatible package version '{0}, version {1}'. Version {2} is requested from {3}'.",
+            //            installedPackage.Id, installedPackage.Version,
+            //            request.VersionsRange, request.RequestedBy));
 
             var similarOldPackage = installedPackages.FirstOrDefault(oldPackage => !string.Equals(oldPackage.Id, installedPackage.Id, StringComparison.OrdinalIgnoreCase)
                 && string.Equals(SimplifyPackageName(oldPackage.Id), SimplifyPackageName(installedPackage.Id), StringComparison.OrdinalIgnoreCase));
@@ -202,7 +214,7 @@ namespace Rhetos.Deployment
         //================================================================
         #region Getting the package from unpacked source folder
 
-        private InstalledPackage TryGetPackageFromUnpackedSourceFolder(PackageSource source, PackageRequest request, FileSyncer binFileSyncer)
+        private InstalledPackage TryGetPackageFromUnpackedSourceFolder(RhetosPackageSource source, PackageRequest request, FileSyncer binFileSyncer)
         {
             if (request.Source == null) // Unpacked source folder must be explicitly set in the package request.
                 return null;
@@ -285,31 +297,39 @@ namespace Rhetos.Deployment
                 return Enumerable.Empty<IPackageFile>();
         }
 
-        private List<PackageRequest> GetNuGetPackageDependencies(IPackageMetadata package)
+        private List<PackageRequest> GetNuGetPackageDependencies(IPackageSearchMetadata package)
         {
-            var dependencies = package.GetCompatiblePackageDependencies(SystemUtility.GetTargetFramework())
+            var rhetosTargetFramework = SystemUtility.GetTargetFramework().FullName;
+            var packageDependencySetOnDotNetStandard = package.DependencySets
+                .Where(p => p.TargetFramework.Framework.Equals(rhetosTargetFramework))
+                .FirstOrDefault();
+
+            if (packageDependencySetOnDotNetStandard == null)
+                throw new FrameworkException($"Package {package.Identity.Id} doesn't support dotnet standard");
+
+            var dependencies = packageDependencySetOnDotNetStandard.Packages
                 .Select(dependency => new PackageRequest
                 {
                     Id = dependency.Id,
-                    VersionsRange = dependency.VersionSpec != null ? dependency.VersionSpec.ToString() : null,
-                    RequestedBy = "package " + package.Id
+                    VersionsRange = dependency.VersionRange.OriginalString,
+                    RequestedBy = "package " + package.Identity.Id
                 }).ToList();
 
-            if (!dependencies.Any(p => string.Equals(p.Id, "Rhetos", StringComparison.OrdinalIgnoreCase)))
-            {
-                // FrameworkAssembly is an obsolete way of marking package dependency on a specific Rhetos version:
-                var rhetosFrameworkAssemblyRegex = new Regex(@"^Rhetos\s*,\s*Version\s*=\s*(\S+)$");
-                var parseFrameworkAssembly = package.FrameworkAssemblies
-                    .Select(fa => rhetosFrameworkAssemblyRegex.Match(fa.AssemblyName.Trim()))
-                    .SingleOrDefault(m => m.Success == true);
-                if (parseFrameworkAssembly != null)
-                    dependencies.Add(new PackageRequest
-                    {
-                        Id = "Rhetos",
-                        VersionsRange = parseFrameworkAssembly.Groups[1].Value,
-                        RequestedBy = "package " + package.Id
-                    });
-            }
+            //if (!dependencies.Any(p => string.Equals(p.Id, "Rhetos", StringComparison.OrdinalIgnoreCase)))
+            //{
+            //    // FrameworkAssembly is an obsolete way of marking package dependency on a specific Rhetos version:
+            //    var rhetosFrameworkAssemblyRegex = new Regex(@"^Rhetos\s*,\s*Version\s*=\s*(\S+)$");
+            //    var parseFrameworkAssembly = package.FrameworkAssemblies
+            //        .Select(fa => rhetosFrameworkAssemblyRegex.Match(fa.AssemblyName.Trim()))
+            //        .SingleOrDefault(m => m.Success == true);
+            //    if (parseFrameworkAssembly != null)
+            //        dependencies.Add(new PackageRequest
+            //        {
+            //            Id = "Rhetos",
+            //            VersionsRange = parseFrameworkAssembly.Groups[1].Value,
+            //            RequestedBy = "package " + package.Id
+            //        });
+            //}
 
             return dependencies;
         }
@@ -344,7 +364,7 @@ namespace Rhetos.Deployment
         //================================================================
         #region Getting the package from legacy zip file
 
-        private InstalledPackage TryGetPackageFromLegacyZipPackage(PackageSource source, PackageRequest request, FileSyncer binFileSyncer)
+        private InstalledPackage TryGetPackageFromLegacyZipPackage(RhetosPackageSource source, PackageRequest request, FileSyncer binFileSyncer)
         {
             if (source.Path == null)
                 return null;
@@ -365,9 +385,11 @@ namespace Rhetos.Deployment
 
             string targetFolder = GetTargetFolder(request.Id, request.VersionsRange);
             _filesUtility.EmptyDirectory(targetFolder);
-            using (var zipFile = ZipFile.Read(zipPackagePath))
-                foreach (var zipEntry in zipFile)
-                    zipEntry.Extract(targetFolder, ExtractExistingFileAction.OverwriteSilently);
+            //using (var zipFile = ZipFile.OpenRead(zipPackagePath))
+            //    foreach (var zipEntry in zipFile.)
+            //        zipEntry.Extract(targetFolder, ExtractExistingFileAction.OverwriteSilently);
+            using (var zipFile = ZipFile.OpenRead(zipPackagePath))
+                zipFile.ExtractToDirectory(targetFolder);
 
             binFileSyncer.AddFolderContent(Path.Combine(targetFolder, "Plugins"), Paths.PluginsFolder, recursive: false);
             binFileSyncer.AddFolderContent(Path.Combine(targetFolder, "Resources"), Paths.ResourcesFolder, SimplifyPackageName(request.Id), recursive: true);
@@ -379,57 +401,95 @@ namespace Rhetos.Deployment
         //================================================================
         #region Getting the package from NuGet
 
-        private InstalledPackage TryGetPackageFromNuGet(PackageSource source, PackageRequest request, FileSyncer binFileSyncer)
+        private InstalledPackage TryGetPackageFromNuGet(RhetosPackageSource source, PackageRequest request, FileSyncer binFileSyncer)
         {
             var sw = Stopwatch.StartNew();
+            var logger = new LoggerForNuget();
 
             // Find the NuGet package:
+            var identity = new PackageIdentity(request.Id, NuGetVersion.Parse(request.VersionsRange));
 
-            var nugetRepository = (source.Path != null && IsLocalPath(source.Path))
-                ? new LocalPackageRepository(source.Path, enableCaching: false) // When developer rebuilds a package, the package version does not need to be increased every time.
-                : PackageRepositoryFactory.Default.CreateRepository(source.ProcessedLocation);
-            var requestVersionsRange = !string.IsNullOrEmpty(request.VersionsRange)
-                ? VersionUtility.ParseVersionSpec(request.VersionsRange)
-                : new VersionSpec();
-            IEnumerable<IPackage> packages = nugetRepository.FindPackages(request.Id, requestVersionsRange, allowPrereleaseVersions: true, allowUnlisted: true).ToList();
+            List<Lazy<INuGetResourceProvider>> providers = new List<Lazy<INuGetResourceProvider>>();
+            providers.AddRange(Repository.Provider.GetCoreV3());  // Add v3 API support
+            
+            ISettings settings = Settings.LoadDefaultSettings(null, null, new MachineWideSettings());
+            ISourceRepositoryProvider sourceRepositoryProvider = new SourceRepositoryProvider(settings, providers);  // See part 2
 
-            if (requestVersionsRange.MinVersion != null && !requestVersionsRange.MinVersion.Equals(new SemanticVersion("0.0")))
-                packages = packages.OrderBy(p => p.Version); // Find the lowest compatible version if the version is specified (default NuGet behavior).
-            else
-                packages = packages.OrderByDescending(p => p.Version);
+            NuGetPackageManager packageManager = new NuGetPackageManager(sourceRepositoryProvider, settings, Paths.PackagesFolder);
 
-            var package = packages.FirstOrDefault();
-            _performanceLogger.Write(sw, () => "PackageDownloader find NuGet package " + request.Id + ".");
+            bool allowPrereleaseVersions = true;
+            bool allowUnlisted = false;
 
+            ResolutionContext resolutionContext = new ResolutionContext(
+                DependencyBehavior.Lowest, allowPrereleaseVersions, allowUnlisted, VersionConstraints.None);
+            INuGetProjectContext projectContext = new ProjectContext();
+
+            var packageSource = new PackageSource("https://api.nuget.org/v3/index.json");
+            var sourceRepository = new SourceRepository(packageSource, providers);  // See part 2
+
+            PackageMetadataResource packageMetadataResource = sourceRepository.GetResourceAsync<PackageMetadataResource>().GetAwaiter().GetResult();
+            var package = packageMetadataResource.GetMetadataAsync(identity, logger, CancellationToken.None).GetAwaiter().GetResult();
+            
             if (package == null)
             {
                 _logger.Trace("Package " + request.ReportIdVersionsRange() + " not found by NuGet at " + source.ProcessedLocation + ".");
                 return null;
             }
 
+            packageManager.InstallPackageAsync(
+                packageManager.PackagesFolderNuGetProject,
+                identity, 
+                resolutionContext, 
+                projectContext,
+                sourceRepository,
+                Array.Empty<SourceRepository>(),  // This is a list of secondary source respositories, probably empty
+                CancellationToken.None).Wait();
+
+            //var nugetRepository = (source.Path != null && IsLocalPath(source.Path))
+            //    ? new LocalPackageRepository(source.Path, enableCaching: false) // When developer rebuilds a package, the package version does not need to be increased every time.
+            //    : PackageRepositoryFactory.Default.CreateRepository(source.ProcessedLocation);
+            //var requestVersionsRange = !string.IsNullOrEmpty(request.VersionsRange)
+            //    ? VersionUtility.ParseVersionSpec(request.VersionsRange)
+            //    : new VersionSpec();
+            //IEnumerable<IPackage> packages = nugetRepository.FindPackages(request.Id, requestVersionsRange, allowPrereleaseVersions: true, allowUnlisted: true).ToList();
+
+            //if (requestVersionsRange.MinVersion != null && !requestVersionsRange.MinVersion.Equals(new SemanticVersion("0.0")))
+            //    packages = packages.OrderBy(p => p.Version); // Find the lowest compatible version if the version is specified (default NuGet behavior).
+            //else
+            //    packages = packages.OrderByDescending(p => p.Version);
+
+            //var package = packages.FirstOrDefault();
+            _performanceLogger.Write(sw, () => "PackageDownloader find NuGet package " + request.Id + ".");
+            _logger.Trace("Downloading NuGet package " + request.Id + " " + request.VersionsRange + " from " + source.ProcessedLocation + ".");
+            //if (package == null)
+            //{
+            //    _logger.Trace("Package " + request.ReportIdVersionsRange() + " not found by NuGet at " + source.ProcessedLocation + ".");
+            //    return null;
+            //}
+
             // Download the NuGet package:
 
-            _logger.Trace("Downloading NuGet package " + package.Id + " " + package.Version + " from " + source.ProcessedLocation + ".");
-            var packageManager = new PackageManager(nugetRepository, Paths.PackagesFolder)
-            {
-                Logger = new LoggerForNuget(_logProvider)
-            };
-            packageManager.LocalRepository.PackageSaveMode = PackageSaveModes.Nuspec;
+            //_logger.Trace("Downloading NuGet package " + package.Id + " " + package.Version + " from " + source.ProcessedLocation + ".");
+            //var packageManager = new PackageManager(nugetRepository, Paths.PackagesFolder)
+            //{
+            //    Logger = new LoggerForNuget(_logProvider)
+            //};
+            //packageManager.LocalRepository.PackageSaveMode = PackageSaveModes.Nuspec;
 
-            packageManager.InstallPackage(package, ignoreDependencies: true, allowPrereleaseVersions: true);
-            _performanceLogger.Write(sw, () => "PackageDownloader install NuGet package " + request.Id + ".");
+            //packageManager.InstallPackage(package, ignoreDependencies: true, allowPrereleaseVersions: true);
+            //_performanceLogger.Write(sw, () => "PackageDownloader install NuGet package " + request.Id + ".");
 
-            string targetFolder = packageManager.PathResolver.GetInstallPath(package);
+            //string targetFolder = packageManager.PathResolver.GetInstallPath(package);
 
-            // Copy binary files and resources:
+            //// Copy binary files and resources:
 
-            foreach (var file in FilterCompatibleLibFiles(package.GetFiles()))
-                binFileSyncer.AddFile(Path.Combine(targetFolder, file.Path), Paths.PluginsFolder);
+            //foreach (var file in FilterCompatibleLibFiles(package.GetFiles()))
+            //    binFileSyncer.AddFile(Path.Combine(targetFolder, file.Path), Paths.PluginsFolder);
 
-            binFileSyncer.AddFolderContent(Path.Combine(targetFolder, "Plugins"), Paths.PluginsFolder, recursive: false); // Obsolete bin folder; lib should be used instead.
-            binFileSyncer.AddFolderContent(Path.Combine(targetFolder, "Resources"), Paths.ResourcesFolder, SimplifyPackageName(package.Id), recursive: true);
+            binFileSyncer.AddFolderContent(Path.Combine(Paths.RhetosServerRootPath, "Plugins"), Paths.PluginsFolder, recursive: false); // Obsolete bin folder; lib should be used instead.
+            binFileSyncer.AddFolderContent(Path.Combine(Paths.RhetosServerRootPath, "Resources"), Paths.ResourcesFolder, SimplifyPackageName(package.Identity.Id), recursive: true);
 
-            return new InstalledPackage(package.Id, package.Version.ToString(), GetNuGetPackageDependencies(package), targetFolder, request, source.ProcessedLocation);
+            return new InstalledPackage(request.Id, request.VersionsRange, GetNuGetPackageDependencies(package), targetFolder, request, source.ProcessedLocation);
         }
 
         private static bool IsLocalPath(string path)

@@ -41,8 +41,8 @@ namespace Rhetos.Deployment
         private List<PackageRequest> _packageRequests;
         public IEnumerable<PackageRequest> PackageRequests { get { Initialize(); return _packageRequests; } }
 
-        private List<PackageSource> _packageSources;
-        public IEnumerable<PackageSource> PackageSources { get { Initialize(); return _packageSources; } }
+        private List<RhetosPackageSource> _packageSources;
+        public IEnumerable<RhetosPackageSource> PackageSources { get { Initialize(); return _packageSources; } }
 
         private object _initializationLock = new object();
 
@@ -81,13 +81,13 @@ namespace Rhetos.Deployment
             return requests;
         }
 
-        private List<PackageSource> LoadPackageSources()
+        private List<RhetosPackageSource> LoadPackageSources()
         {
             const string configFileUsage = "Edit the file to add locations where Rhetos packages can be found.";
             string xml = ReadConfigFileOrCreateTemplate(SourcesConfigurationFileName, SourcesConfigurationTemplateFileName, configFileUsage);
             var xdoc = XDocument.Parse(xml);
             var sources = xdoc.Root.Elements()
-                .Select(sourceXml => new PackageSource((string)sourceXml.Attribute("location").Value))
+                .Select(sourceXml => new RhetosPackageSource((string)sourceXml.Attribute("location").Value))
                 .ToList();
 
             if (sources.Count == 0)

@@ -50,7 +50,7 @@ namespace Rhetos.Utilities
         /// </summary>
         public static FrameworkName GetTargetFramework()
         {
-            return new FrameworkName(".NETCore,Version=v2.0");
+            return new FrameworkName(".NETStandard,Version=v1.3");
         }
     }
 }

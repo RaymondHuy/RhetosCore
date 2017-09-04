@@ -17,44 +17,76 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+using NuGet.Common;
 using Rhetos.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Rhetos.Deployment
 {
-    public class LoggerForNuget : NuGet.ILogger
+    public class LoggerForNuget : NuGet.Common.ILogger
     {
-        ILogger _logger;
-
-        public LoggerForNuget(ILogProvider logProvider)
+        public void Log(LogLevel level, string data)
         {
-            _logger = logProvider.GetLogger("NuGet");
+            throw new NotImplementedException();
         }
 
-        Dictionary<NuGet.MessageLevel, EventType> logLevels = new Dictionary<NuGet.MessageLevel, EventType>
+        public void Log(ILogMessage message)
         {
-            { NuGet.MessageLevel.Debug, EventType.Trace },
-            { NuGet.MessageLevel.Info, EventType.Trace },
-            { NuGet.MessageLevel.Warning, EventType.Info },
-            { NuGet.MessageLevel.Error, EventType.Error },
-        };
-
-        public void Log(NuGet.MessageLevel nugetLevel, string message, params object[] args)
-        {
-            EventType logLevel;
-            if (!logLevels.TryGetValue(nugetLevel, out logLevel))
-                logLevel = EventType.Error;
-
-            _logger.Write(logLevel, message, args);
+            throw new NotImplementedException();
         }
 
-        public NuGet.FileConflictResolution ResolveFileConflict(string message)
+        public Task LogAsync(LogLevel level, string data)
         {
-            _logger.Error(message);
-            return NuGet.FileConflictResolution.OverwriteAll;
+            throw new NotImplementedException();
+        }
+
+        public Task LogAsync(ILogMessage message)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void LogDebug(string data)
+        {
+            Console.WriteLine(data);
+        }
+
+        public void LogError(string data)
+        {
+            Console.WriteLine(data);
+        }
+
+        public void LogErrorSummary(string data)
+        {
+            Console.WriteLine(data);
+        }
+
+        public void LogInformation(string data)
+        {
+            Console.WriteLine(data);
+        }
+
+        public void LogInformationSummary(string data)
+        {
+            Console.WriteLine(data);
+        }
+
+        public void LogMinimal(string data)
+        {
+            Console.WriteLine(data);
+        }
+
+        public void LogVerbose(string data)
+        {
+            Console.WriteLine(data);
+        }
+
+        public void LogWarning(string data)
+        {
+            Console.WriteLine(data);
         }
     }
 }

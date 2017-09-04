@@ -17,6 +17,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+using Microsoft.EntityFrameworkCore;
 using Rhetos.Extensibility;
 using Rhetos.Logging;
 using Rhetos.Utilities;
@@ -32,6 +33,7 @@ using System.Reflection;
 using System.Text;
 using System.Xml;
 
+//Important
 namespace Rhetos.Dom.DefaultConcepts.Persistence
 {
     /// <summary>
@@ -63,20 +65,20 @@ namespace Rhetos.Dom.DefaultConcepts.Persistence
 
             var connection = new SqlConnection(_connectionString);
 
-            var dbConfiguration = (DbConfiguration)_dom.Assembly.GetType("Common.EntityFrameworkConfiguration")
-                .GetConstructor(new Type[] { })
-                .Invoke(new object[] { });
+            //var dbConfiguration = (DbConfiguration)_dom.Assembly.GetType("Common.EntityFrameworkConfiguration")
+            //    .GetConstructor(new Type[] { })
+            //    .Invoke(new object[] { });
 
             var dbContext = (DbContext)_dom.Assembly.GetType("Common.EntityFrameworkContext")
-                .GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance, null, new[] { typeof(DbConnection), dbConfiguration.GetType() }, null)
-                .Invoke(new object[] { connection, dbConfiguration });
+                .GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance, null, new[] { typeof(DbConnection) }, null)// dbConfiguration.GetType() }, null)
+                .Invoke(new object[] { connection }); //dbConfiguration });
 
             string edmx;
             using (var stringWriter = new StringWriter())
             using (var xmlWriter = new XmlTextWriter(stringWriter))
             {
                 xmlWriter.Formatting = System.Xml.Formatting.Indented;
-                EdmxWriter.WriteEdmx(dbContext, xmlWriter);
+                //EdmxWriter.WriteEdmx(dbContext, xmlWriter);
                 edmx = stringWriter.ToString();
             }
 
