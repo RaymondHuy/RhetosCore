@@ -23,7 +23,6 @@ using System.Composition;
 using System.Linq;
 using System.Text;
 using Rhetos.Extensibility;
-using Rhetos.XmlSerialization;
 
 namespace Rhetos.Processing.DefaultCommands
 {

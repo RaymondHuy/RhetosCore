@@ -267,7 +267,7 @@ namespace Rhetos.Deployment
             {
                 { "Configuration", "Debug" },
             };
-            var packageBuilder = new PackageBuilder(metadataFile, properties, includeEmptyDirectories: false);
+            var packageBuilder = new PackageBuilder(metadataFile, null, includeEmptyDirectories: false);
 
             var sourceFolder = Path.GetDirectoryName(metadataFile);
             var targetFolder = GetTargetFolder(packageBuilder.Id, packageBuilder.Version.ToString());
@@ -289,12 +289,13 @@ namespace Rhetos.Deployment
 
         private IEnumerable<IPackageFile> FilterCompatibleLibFiles(IEnumerable<IPackageFile> files)
         {
-            IEnumerable<IPackageFile> compatibleLibFiles;
-            var allLibFiles = files.Where(file => file.Path.StartsWith(@"lib\"));
-            if (VersionUtility.TryGetCompatibleItems(SystemUtility.GetTargetFramework(), allLibFiles, out compatibleLibFiles))
-                return compatibleLibFiles;
-            else
-                return Enumerable.Empty<IPackageFile>();
+            return files;
+            //IEnumerable<IPackageFile> compatibleLibFiles;
+            //var allLibFiles = files.Where(file => file.Path.StartsWith(@"lib\"));
+            //if (VersionUtility.TryGetCompatibleItems(SystemUtility.GetTargetFramework(), allLibFiles, out compatibleLibFiles))
+            //    return compatibleLibFiles;
+            //else
+            //    return Enumerable.Empty<IPackageFile>();
         }
 
         private List<PackageRequest> GetNuGetPackageDependencies(IPackageSearchMetadata package)
@@ -333,8 +334,43 @@ namespace Rhetos.Deployment
 
             return dependencies;
         }
+        private List<PackageRequest> GetNuGetPackageDependencies(PackageBuilder package)
+        {
+            var rhetosTargetFramework = SystemUtility.GetTargetFramework().FullName;
+            var packageDependencySetOnDotNetStandard = package.DependencyGroups
+                .Where(p => p.TargetFramework.Framework.Equals(rhetosTargetFramework))
+                .FirstOrDefault();
 
-        private class SimplePropertyProvider : Dictionary<string, string>, IPropertyProvider
+            if (packageDependencySetOnDotNetStandard == null)
+                throw new FrameworkException($"Package {package.Id} doesn't support dotnet standard");
+
+            var dependencies = packageDependencySetOnDotNetStandard.Packages
+                .Select(dependency => new PackageRequest
+                {
+                    Id = dependency.Id,
+                    VersionsRange = dependency.VersionRange.OriginalString,
+                    RequestedBy = "package " + package.Id
+                }).ToList();
+
+            //if (!dependencies.Any(p => string.Equals(p.Id, "Rhetos", StringComparison.OrdinalIgnoreCase)))
+            //{
+            //    // FrameworkAssembly is an obsolete way of marking package dependency on a specific Rhetos version:
+            //    var rhetosFrameworkAssemblyRegex = new Regex(@"^Rhetos\s*,\s*Version\s*=\s*(\S+)$");
+            //    var parseFrameworkAssembly = package.FrameworkAssemblies
+            //        .Select(fa => rhetosFrameworkAssemblyRegex.Match(fa.AssemblyName.Trim()))
+            //        .SingleOrDefault(m => m.Success == true);
+            //    if (parseFrameworkAssembly != null)
+            //        dependencies.Add(new PackageRequest
+            //        {
+            //            Id = "Rhetos",
+            //            VersionsRange = parseFrameworkAssembly.Groups[1].Value,
+            //            RequestedBy = "package " + package.Id
+            //        });
+            //}
+
+            return dependencies;
+        }
+        private class SimplePropertyProvider : Dictionary<string, string>
         {
             public dynamic GetPropertyValue(string propertyName)
             {
@@ -489,7 +525,7 @@ namespace Rhetos.Deployment
             binFileSyncer.AddFolderContent(Path.Combine(Paths.RhetosServerRootPath, "Plugins"), Paths.PluginsFolder, recursive: false); // Obsolete bin folder; lib should be used instead.
             binFileSyncer.AddFolderContent(Path.Combine(Paths.RhetosServerRootPath, "Resources"), Paths.ResourcesFolder, SimplifyPackageName(package.Identity.Id), recursive: true);
 
-            return new InstalledPackage(request.Id, request.VersionsRange, GetNuGetPackageDependencies(package), targetFolder, request, source.ProcessedLocation);
+            return new InstalledPackage(request.Id, request.VersionsRange, GetNuGetPackageDependencies(package), Paths.RhetosServerRootPath, request, source.ProcessedLocation);
         }
 
         private static bool IsLocalPath(string path)
@@ -505,7 +541,7 @@ namespace Rhetos.Deployment
         {
             if (request.VersionsRange != null)
             {
-                var versionSpec = VersionUtility.ParseVersionSpec(request.VersionsRange);
+                var versionSpec = VersionRange.Parse(request.VersionsRange);
                 if (versionSpec.MinVersion != null)
                     if (versionSpec.IsMinInclusive)
                         return versionSpec.MinVersion.ToString();
