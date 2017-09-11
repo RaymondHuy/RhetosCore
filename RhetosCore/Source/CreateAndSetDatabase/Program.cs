@@ -17,6 +17,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -132,15 +133,12 @@ namespace CreateAndSetDatabase
             sc.Close();
             Console.WriteLine();
 
-            if (!File.Exists(@"ConnectionStrings.config"))
-                File.Copy(@"Template.ConnectionStrings.config", @"ConnectionStrings.config");
-
-            Console.WriteLine(@"Writing connection string in ""ConnectionStrings.config""");
+            Console.WriteLine(@"Writing connection string in ""appsettings.json""");
             // set Rhetos to point to new database
-            FileReplaceHelper.ReplaceWithRegex(@"ConnectionStrings.config"
-                            , @"<add.*?name=""ServerConnectionString""(.|\n)*?/>"
-                            , @"<add connectionString=""" + rhetosConnectionString + @""" name=""ServerConnectionString"" providerName=""Rhetos.MsSql"" />"
-                            , "Not valid ConnectionStrings.config file.");
+
+            var serverConnectionString = new ServerConnectionString() { Value = rhetosConnectionString, Provider = "Rhetos.MsSql" };
+
+            File.WriteAllText("appsettings.json", JsonConvert.SerializeObject(new { ServerConnectionString = serverConnectionString }));
         }
     }
 }
