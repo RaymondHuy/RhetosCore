@@ -37,7 +37,6 @@ namespace Rhetos.Deployment
         {
             _logger = logProvider.GetLogger(GetType().Name);
             _packages = new Lazy<IEnumerable<InstalledPackage>>(Load);
-            var token = Newtonsoft.Json.Linq.JToken.Parse("");
         }
 
         public IEnumerable<InstalledPackage> Packages { get { return _packages.Value; } }

@@ -27,6 +27,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Loader;
 using System.Text;
 
 namespace Rhetos.Extensibility
@@ -51,6 +52,7 @@ namespace Rhetos.Extensibility
                     if (_pluginsByExport == null)
                     {
                         var assemblies = ListAssemblies();
+                        LoadExternalAssembliesToCurrentContext(assemblies);
                         _pluginsByExport = LoadPlugins(assemblies);
                     }
 
@@ -106,10 +108,13 @@ namespace Rhetos.Extensibility
                             contractName = exportAttribute.ContractType.FullName;
                             plugin.Type = type;
 
-                            if (type.GetCustomAttribute(typeof(ExportMetadataAttribute)) != null)
+                            if (type.GetCustomAttributes(typeof(ExportMetadataAttribute)) != null)
                             {
-                                var exportMetadata = (ExportMetadataAttribute)type.GetCustomAttribute(typeof(ExportMetadataAttribute));
-                                plugin.Metadata.Add(exportMetadata.Name, exportMetadata.Value);
+                                var exportMetadatas = (IEnumerable<ExportMetadataAttribute>)type.GetCustomAttributes(typeof(ExportMetadataAttribute));
+                                foreach (var item in exportMetadatas)
+                                {
+                                    plugin.Metadata.Add(item.Name, item.Value);
+                                }
                             }
                             plugin.Metadata.Add("ExportTypeIdentity", exportAttribute.ContractType);
                         }
@@ -147,6 +152,14 @@ namespace Rhetos.Extensibility
         {
             lock (_pluginsLock)
                 _pluginsByExport = null;
+        }
+
+        private static void LoadExternalAssembliesToCurrentContext(List<string> assemblies)
+        {
+            foreach (var assembly in assemblies)
+            {
+                AssemblyLoadContext.Default.LoadFromAssemblyPath(assembly);
+            }
         }
     }
 }

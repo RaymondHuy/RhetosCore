@@ -79,14 +79,18 @@ namespace Rhetos.Dsl
         {
             PropertyInfo pi;
             FieldInfo fi;
-
+            //Console.WriteLine($"info:  {conceptInfo}  value:  {value}");
             if ((pi = MemberInfo as PropertyInfo) != null)
                 try
                 {
                     pi.SetValue(conceptInfo, value, null);
+                    Console.WriteLine();
+                    Console.WriteLine(value);
+                    Console.WriteLine(conceptInfo.GetType());
                 }
                 catch (ArgumentException ae)
                 {
+                    //Console.WriteLine($"info 1:  {conceptInfo.GetType().FullName}  value:  {value} {MemberInfo.Name}");
                     throw new FrameworkException(
                         string.Format(CultureInfo.InvariantCulture,
                             "Unable to convert property {0} in concept {1} from type {2} to type {3}",
@@ -103,6 +107,7 @@ namespace Rhetos.Dsl
                 }
                 catch (ArgumentException ae)
                 {
+                    Console.WriteLine($"info 2:  {conceptInfo.GetType().FullName}  value:  {value.GetType().FullName}");
                     throw new FrameworkException(
                         string.Format(CultureInfo.InvariantCulture,
                             "Unable to convert property {0} in concept {1} from type {2} to type {3}",

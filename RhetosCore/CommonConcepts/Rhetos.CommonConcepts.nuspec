@@ -12,24 +12,26 @@
     <copyright>Copyright Omega software 2015</copyright>
     <tags>Rhetos plugin</tags>
     <dependencies>
-      <dependency id="Rhetos" version="1.0.0" />
+      <group targetFramework=".NETStandard1.3">
+        <dependency id="NETStandard.Library" version="1.6.1" exclude="Build,Analyzers" />
+      </group>
     </dependencies>
   </metadata>
   <files>
     <file src="Readme.md" target="" />
     <file src="DataMigration\**\*" target="DataMigration" />
     <file src="DslScripts\**\*" target="DslScripts" />
-    <file src="Plugins\Rhetos.Dsl.DefaultConcepts\bin\Debug\Rhetos.Dsl.DefaultConcepts.dll" target="lib\net451" />
-    <file src="Plugins\Rhetos.Dsl.DefaultConcepts\bin\Debug\Rhetos.Dsl.DefaultConcepts.pdb" target="lib\net451" />
-    <file src="Plugins\Rhetos.Dom.DefaultConcepts\bin\Debug\Rhetos.Dom.DefaultConcepts.dll" target="lib\net451" />
-    <file src="Plugins\Rhetos.Dom.DefaultConcepts\bin\Debug\Rhetos.Dom.DefaultConcepts.pdb" target="lib\net451" />
-    <file src="Plugins\Rhetos.Dom.DefaultConcepts.Interfaces\bin\Debug\Rhetos.Dom.DefaultConcepts.Interfaces.dll" target="lib\net451" />
-    <file src="Plugins\Rhetos.Dom.DefaultConcepts.Interfaces\bin\Debug\Rhetos.Dom.DefaultConcepts.Interfaces.pdb" target="lib\net451" />
-    <file src="Plugins\Rhetos.DatabaseGenerator.DefaultConcepts\bin\Debug\Rhetos.DatabaseGenerator.DefaultConcepts.dll" target="lib\net451" />
-    <file src="Plugins\Rhetos.DatabaseGenerator.DefaultConcepts\bin\Debug\Rhetos.DatabaseGenerator.DefaultConcepts.pdb" target="lib\net451" />
-    <file src="Plugins\Rhetos.Processing.DefaultCommands\bin\Debug\Rhetos.Processing.DefaultCommands.dll" target="lib\net451" />
-    <file src="Plugins\Rhetos.Processing.DefaultCommands\bin\Debug\Rhetos.Processing.DefaultCommands.pdb" target="lib\net451" />
-    <file src="Plugins\Rhetos.Processing.DefaultCommands.Interfaces\bin\Debug\Rhetos.Processing.DefaultCommands.Interfaces.dll" target="lib\net451" />
-    <file src="Plugins\Rhetos.Processing.DefaultCommands.Interfaces\bin\Debug\Rhetos.Processing.DefaultCommands.Interfaces.pdb" target="lib\net451" />
+    <file src="Plugins\Rhetos.Dsl.DefaultConcepts\bin\Debug\netcoreapp2.0\Rhetos.Dsl.DefaultConcepts.dll" target="lib\netstandard1.3" />
+    <file src="Plugins\Rhetos.Dsl.DefaultConcepts\bin\Debug\netcoreapp2.0\Rhetos.Dsl.DefaultConcepts.pdb" target="lib\netstandard1.3" />
+    <file src="Plugins\Rhetos.Dom.DefaultConcepts\bin\Debug\netcoreapp2.0\Rhetos.Dom.DefaultConcepts.dll" target="lib\netstandard1.3" />
+    <file src="Plugins\Rhetos.Dom.DefaultConcepts\bin\Debug\netcoreapp2.0\Rhetos.Dom.DefaultConcepts.pdb" target="lib\netstandard1.3" />
+    <file src="Plugins\Rhetos.Dom.DefaultConcepts.Interfaces\bin\Debug\netcoreapp2.0\Rhetos.Dom.DefaultConcepts.Interfaces.dll" target="lib\netstandard1.3" />
+    <file src="Plugins\Rhetos.Dom.DefaultConcepts.Interfaces\bin\Debug\netcoreapp2.0\Rhetos.Dom.DefaultConcepts.Interfaces.pdb" target="lib\netstandard1.3" />
+    <file src="Plugins\Rhetos.DatabaseGenerator.DefaultConcepts\bin\Debug\netcoreapp2.0\Rhetos.DatabaseGenerator.DefaultConcepts.dll" target="lib\netstandard1.3" />
+    <file src="Plugins\Rhetos.DatabaseGenerator.DefaultConcepts\bin\Debug\netcoreapp2.0\Rhetos.DatabaseGenerator.DefaultConcepts.pdb" target="lib\netstandard1.3" />
+    <file src="Plugins\Rhetos.Processing.DefaultCommands\bin\Debug\netcoreapp2.0\Rhetos.Processing.DefaultCommands.dll" target="lib\netstandard1.3" />
+    <file src="Plugins\Rhetos.Processing.DefaultCommands\bin\Debug\netcoreapp2.0\Rhetos.Processing.DefaultCommands.pdb" target="lib\netstandard1.3" />
+    <file src="Plugins\Rhetos.Processing.DefaultCommands.Interfaces\bin\Debug\netcoreapp2.0\Rhetos.Processing.DefaultCommands.Interfaces.dll" target="lib\netstandard1.3" />
+    <file src="Plugins\Rhetos.Processing.DefaultCommands.Interfaces\bin\Debug\netcoreapp2.0\Rhetos.Processing.DefaultCommands.Interfaces.pdb" target="lib\netstandard1.3" />
   </files>
 </package>

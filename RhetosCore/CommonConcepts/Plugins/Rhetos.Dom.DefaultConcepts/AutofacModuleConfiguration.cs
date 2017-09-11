@@ -42,7 +42,7 @@ namespace Rhetos.Dom.DefaultConcepts
             builder.RegisterType<AuthorizationDataCache>().As<AuthorizationDataCache>().As<IAuthorizationData>().InstancePerLifetimeScope();
             builder.RegisterType<CommonAuthorizationProvider>().As<IAuthorizationProvider>().InstancePerLifetimeScope();
             builder.RegisterType<EntityFrameworkMetadata>().SingleInstance();
-
+            System.Console.WriteLine("Loaded Rhetos Default Concepts AutofacModuleConfiguration");
             base.Load(builder);
         }
     }

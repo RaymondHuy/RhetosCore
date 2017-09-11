@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Security.Principal.Windows" Version="4.4.0-preview1-25305-02" />
+    <PackageReference Include="System.Security.Principal.Windows" Version="4.4.0" />
   </ItemGroup>
 
   <ItemGroup>

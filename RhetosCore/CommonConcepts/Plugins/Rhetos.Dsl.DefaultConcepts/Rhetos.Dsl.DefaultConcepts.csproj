@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Composition" Version="1.1.0-preview1-25305-02" />
+    <PackageReference Include="System.Composition" Version="1.1.0" />
   </ItemGroup>
 
   <ItemGroup>

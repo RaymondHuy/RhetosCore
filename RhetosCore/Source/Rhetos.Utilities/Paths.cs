@@ -98,13 +98,13 @@ namespace Rhetos.Utilities
 
         public static string PackagesFolder { get { return Path.Combine(RhetosServerRootPath, "PackagesCache"); } }
         public static string ResourcesFolder { get { return Path.Combine(RhetosServerRootPath, "Resources"); } }
-        public static string BinFolder { get { return Path.Combine(RhetosServerRootPath, "bin"); } }
-        public static string GeneratedFolder { get { return Path.Combine(RhetosServerRootPath, "bin\\Generated"); } }
-        public static string PluginsFolder { get { return Path.Combine(RhetosServerRootPath, "bin\\Plugins"); } }
+        public static string BinFolder { get { return Path.Combine(RhetosServerRootPath, "bin\\Debug\\netcoreapp2.0"); } }
+        public static string GeneratedFolder { get { return Path.Combine(RhetosServerRootPath, "bin\\Debug\\netcoreapp2.0\\Generated"); } }
+        public static string PluginsFolder { get { return Path.Combine(RhetosServerRootPath, "bin\\Debug\\netcoreapp2.0\\Plugins"); } }
 
         public static string RhetosServerWebConfigFile { get { return Path.Combine(RhetosServerRootPath, "Web.config"); } }
-        public static string DomAssemblyFile { get { return Path.Combine(RhetosServerRootPath, "bin", DomAssemblyName + ".dll"); } }
-        public static string ConnectionStringsFile { get { return Path.Combine(RhetosServerRootPath, @"bin\ConnectionStrings.config"); } }
+        public static string DomAssemblyFile { get { return Path.Combine(RhetosServerRootPath, "bin\\Debug\\netcoreapp2.0", DomAssemblyName + ".dll"); } }
+        public static string ConnectionStringsFile { get { return Path.Combine(RhetosServerRootPath, @"bin\\Debug\\netcoreapp2.0\ConnectionStrings.config"); } }
 
         public const string DomAssemblyName = "ServerDom";
     }

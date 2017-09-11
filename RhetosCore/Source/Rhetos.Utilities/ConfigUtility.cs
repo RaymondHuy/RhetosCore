@@ -20,6 +20,7 @@
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -29,9 +30,14 @@ namespace Rhetos.Utilities
     {
         private static IConfigurationRoot Configuration;
 
-        public static void SetConfiguration(IConfigurationRoot configuration)
+        public static void SetConfiguration(string settingFileName)
         {
-            Configuration = configuration;
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile(settingFileName);
+
+            //Configuration = builder.Build();
+            Configuration = builder.Build();
         }
         /// <summary>
         /// Use "Configuration.GetInt" or "Configuration.GetBool" instead.

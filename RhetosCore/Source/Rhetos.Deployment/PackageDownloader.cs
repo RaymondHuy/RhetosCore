@@ -79,6 +79,8 @@ namespace Rhetos.Deployment
             var installedPackages = new List<InstalledPackage>();
             //installedPackages.Add(new InstalledPackage("Rhetos", SystemUtility.GetRhetosVersion(), new List<PackageRequest>(), Paths.RhetosServerRootPath,
             //    new PackageRequest { Id = "Rhetos", VersionsRange = "", Source = "", RequestedBy = "Rhetos framework" }, "."));
+            installedPackages.Add(new InstalledPackage("NETStandard.Library", "1.6.1", new List<PackageRequest>(), Paths.RhetosServerRootPath, null, "."));
+                //new PackageRequest { Id = ".NETStandard 1.3", VersionsRange = "", Source = "", RequestedBy = "Rhetos framework" }, "."));
 
             var binFileSyncer = new FileSyncer(_logProvider);
             binFileSyncer.AddDestinations(Paths.PluginsFolder, Paths.ResourcesFolder); // Even if there are no packages, those folders must be created and emptied.
@@ -96,10 +98,10 @@ namespace Rhetos.Deployment
                         ValidatePackage(installedPackage, request, installedPackages);
                         installedPackages.Add(installedPackage);
                         //Nuget Client has already downloaded dependencies.
-                        //newDependencies.AddRange(installedPackage.Dependencies);
+                        newDependencies.AddRange(installedPackage.Dependencies);
                     }
                 }
-                //packageRequests = newDependencies;
+                packageRequests = newDependencies;
             }
 
             DeleteObsoletePackages(installedPackages);
@@ -289,13 +291,13 @@ namespace Rhetos.Deployment
 
         private IEnumerable<IPackageFile> FilterCompatibleLibFiles(IEnumerable<IPackageFile> files)
         {
-            return files;
             //IEnumerable<IPackageFile> compatibleLibFiles;
-            //var allLibFiles = files.Where(file => file.Path.StartsWith(@"lib\"));
+            var allLibFiles = files.Where(file => file.Path.StartsWith(@"lib\"));
             //if (VersionUtility.TryGetCompatibleItems(SystemUtility.GetTargetFramework(), allLibFiles, out compatibleLibFiles))
             //    return compatibleLibFiles;
             //else
             //    return Enumerable.Empty<IPackageFile>();
+            return allLibFiles;
         }
 
         private List<PackageRequest> GetNuGetPackageDependencies(IPackageSearchMetadata package)
@@ -338,7 +340,7 @@ namespace Rhetos.Deployment
         {
             var rhetosTargetFramework = SystemUtility.GetTargetFramework().FullName;
             var packageDependencySetOnDotNetStandard = package.DependencyGroups
-                .Where(p => p.TargetFramework.Framework.Equals(rhetosTargetFramework))
+                .Where(p => p.TargetFramework.DotNetFrameworkName.Equals(rhetosTargetFramework))
                 .FirstOrDefault();
 
             if (packageDependencySetOnDotNetStandard == null)
