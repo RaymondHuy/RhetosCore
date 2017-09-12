@@ -61,10 +61,7 @@ namespace Rhetos.Dsl
 
         private ValueOrError<IConceptInfo> ParseMembers(ITokenReader tokenReader, IConceptInfo lastConcept, bool readingAReference)
         {
-            var s = Activator.CreateInstance(ConceptInfoType);
-            //Console.WriteLine("n : " + s.GetType().GetInterfaces().Count());
             IConceptInfo conceptInfo = (IConceptInfo)Activator.CreateInstance(ConceptInfoType);
-            //Console.WriteLine(conceptInfo.GetType());
             bool firstMember = true;
             bool lastPropertyWasInlineParent = false;
             bool lastConceptUsed = false;

@@ -92,9 +92,14 @@ namespace Rhetos.Extensibility
         {
             var stopwatch = Stopwatch.StartNew();
             var pluginsByExport = new MultiDictionary<string, PluginInfo>();
+
+            var assemblyReferences = AppDomain.CurrentDomain.GetAssemblies()
+                                    .Where(a => !a.IsDynamic)
+                                    .ToArray();
+
             foreach (var assembly in assemblies)
             {
-                var types = Assembly.LoadFile(assembly).GetTypes();
+                var types = assemblyReferences.Where(a => a.Location == assembly).FirstOrDefault().GetTypes();
                 foreach (var type in types)
                 {
                     string contractName = String.Empty;

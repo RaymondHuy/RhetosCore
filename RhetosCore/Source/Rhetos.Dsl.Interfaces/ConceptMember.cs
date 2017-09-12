@@ -90,7 +90,6 @@ namespace Rhetos.Dsl
                 }
                 catch (ArgumentException ae)
                 {
-                    //Console.WriteLine($"info 1:  {conceptInfo.GetType().FullName}  value:  {value} {MemberInfo.Name}");
                     throw new FrameworkException(
                         string.Format(CultureInfo.InvariantCulture,
                             "Unable to convert property {0} in concept {1} from type {2} to type {3}",
