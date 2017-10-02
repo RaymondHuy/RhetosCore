@@ -30,6 +30,9 @@ using Rhetos.Extensibility;
 using Rhetos.Utilities;
 using Rhetos.Logging;
 using ICodeGenerator = Rhetos.Compiler.ICodeGenerator;
+using Rhetos.Compiler.Interfaces;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis;
 
 namespace Rhetos.Dom
 {
@@ -76,16 +79,22 @@ namespace Rhetos.Dom
             _log.GetLogger("Domain Object Model references").Trace(() => string.Join(", ", assemblySource.RegisteredReferences));
             _log.GetLogger("Domain Object Model source").Trace(assemblySource.GeneratedCode);
 
-            CompilerParameters parameters = new CompilerParameters
+            //CompilerParameters parameters = new CompilerParameters
+            //{
+            //    GenerateExecutable = false,
+            //    GenerateInMemory = string.IsNullOrEmpty(Paths.DomAssemblyName),
+            //    OutputAssembly = string.IsNullOrEmpty(Paths.DomAssemblyName) ? null : Path.Combine(Paths.BinFolder, Paths.DomAssemblyName + ".dll"),
+            //    IncludeDebugInformation = true,
+            //    CompilerOptions = _domGeneratorOptions.Debug ? "" : "/optimize"
+            //};
+            CompilerParameter parameter = new CompilerParameter
             {
-                GenerateExecutable = false,
-                GenerateInMemory = string.IsNullOrEmpty(Paths.DomAssemblyName),
-                OutputAssembly = string.IsNullOrEmpty(Paths.DomAssemblyName) ? null : Path.Combine(Paths.BinFolder, Paths.DomAssemblyName + ".dll"),
-                IncludeDebugInformation = true,
-                CompilerOptions = _domGeneratorOptions.Debug ? "" : "/optimize"
+                OutputAssemblyPath = string.IsNullOrEmpty(Paths.DomAssemblyName) ? null : Path.Combine(Paths.BinFolder, Paths.DomAssemblyName + ".dll"),
+                Options = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary),
+                AssemblyName = Paths.DomAssemblyName
             };
 
-            _objectModel = _assemblyGenerator.Generate(assemblySource, parameters);
+            _objectModel = _assemblyGenerator.Generate(assemblySource, parameter);
         }
     }
 }

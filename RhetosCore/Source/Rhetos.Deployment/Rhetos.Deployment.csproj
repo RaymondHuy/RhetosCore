@@ -25,4 +25,17 @@
   <ItemGroup>
     <EmbeddedResource Include="RhetosDatabase.MsSql.sql"></EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Sql.MsSql.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Sql.MsSql.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Sql.MsSql.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Sql.MsSql.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
 </Project>

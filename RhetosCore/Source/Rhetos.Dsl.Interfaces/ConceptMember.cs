@@ -84,9 +84,6 @@ namespace Rhetos.Dsl
                 try
                 {
                     pi.SetValue(conceptInfo, value, null);
-                    Console.WriteLine();
-                    Console.WriteLine(value);
-                    Console.WriteLine(conceptInfo.GetType());
                 }
                 catch (ArgumentException ae)
                 {

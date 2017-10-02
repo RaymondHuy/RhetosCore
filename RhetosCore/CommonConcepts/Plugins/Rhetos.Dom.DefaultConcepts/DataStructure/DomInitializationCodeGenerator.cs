@@ -49,7 +49,9 @@ namespace Rhetos.Dom.DefaultConcepts
     using System.Linq.Expressions;
     using System.Runtime.Serialization;
     using Rhetos.Dom.DefaultConcepts;
-    using Rhetos.Utilities;";
+    using Rhetos.Utilities;
+    using Microsoft.EntityFrameworkCore;
+    using System.ComponentModel;";
         
 
         public DomInitializationCodeGenerator()
@@ -77,6 +79,18 @@ namespace Rhetos.Dom.DefaultConcepts
             codeBuilder.AddReferencesFromDependency(typeof(Rhetos.Security.IWindowsSecurity));
             codeBuilder.AddReferencesFromDependency(typeof(Rhetos.Utilities.SqlUtility));
             codeBuilder.AddReferencesFromDependency(typeof(Microsoft.EntityFrameworkCore.DbContext));
+            codeBuilder.AddReferencesFromDependency(typeof(Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions));
+            codeBuilder.AddReferencesFromDependency(typeof(HashSet<>));
+            codeBuilder.AddReferencesFromDependency(typeof(IQueryable));
+            codeBuilder.AddReferencesFromDependency(typeof(Queryable));
+            codeBuilder.AddReferencesFromDependency(typeof(System.ComponentModel.TypeConverter));
+            codeBuilder.AddReferencesFromDependency(typeof(System.Console));
+            codeBuilder.AddReferencesFromDependency(typeof(Microsoft.Extensions.DependencyInjection.ServiceCollection));
+            codeBuilder.AddReferencesFromDependency(typeof(Microsoft.Extensions.DependencyInjection.IServiceCollection));
+            codeBuilder.AddReferencesFromDependency(typeof(System.IServiceProvider));
+            codeBuilder.AddReferencesFromDependency(typeof(Microsoft.EntityFrameworkCore.SqlServerDbContextOptionsExtensions));
+            codeBuilder.AddReferencesFromDependency(typeof(Autofac.Extensions.DependencyInjection.AutofacRegistration));
+
             //codeBuilder.AddReferencesFromDependency(typeof(System.Data.Entity.SqlServer.SqlProviderServices));
             //codeBuilder.AddReferencesFromDependency(typeof(System.Data.Entity.Core.EntityClient.EntityConnection));
             //codeBuilder.AddReferencesFromDependency(typeof(System.Data.Entity.Core.Metadata.Edm.MetadataWorkspace));
@@ -84,6 +98,8 @@ namespace Rhetos.Dom.DefaultConcepts
             //codeBuilder.AddReferencesFromDependency(typeof(System.Data.Entity.Core.Objects.ObjectStateEntry));
             codeBuilder.AddReferencesFromDependency(typeof(Rhetos.Persistence.IPersistenceCache));
             codeBuilder.AddReferencesFromDependency(typeof(Rhetos.Persistence.IPersistenceTransaction));
+
+            codeBuilder.AddReferencesFromDependency(typeof(System.Composition.ExportAttribute));
         }
 
         private static string GenerateCommonClassesSnippet()
@@ -94,6 +110,9 @@ namespace Rhetos.Dom.DefaultConcepts
     " + StandardNamespacesSnippet + @"
 
     using Autofac;
+    using Autofac.Extensions.DependencyInjection;
+    using Microsoft.Extensions.DependencyInjection;
+
     " + ModuleCodeGenerator.CommonUsingTag + @"
 
     public class DomRepository
@@ -108,13 +127,13 @@ namespace Rhetos.Dom.DefaultConcepts
         " + ModuleCodeGenerator.CommonDomRepositoryMembersTag + @"
     }
 
-    public class EntityFrameworkContext : System.Data.Entity.DbContext, Rhetos.Persistence.IPersistenceCache
+    public class EntityFrameworkContext : DbContext, Rhetos.Persistence.IPersistenceCache
     {
         public EntityFrameworkContext(
             Rhetos.Persistence.IPersistenceTransaction persistenceTransaction,
-            Rhetos.Dom.DefaultConcepts.Persistence.EntityFrameworkMetadata metadata,
-            EntityFrameworkConfiguration configuration) // EntityFrameworkConfiguration is provided as an IoC dependency for EntityFrameworkContext in order to initialize the global DbConfiguration before using DbContext.
-            : base(new System.Data.Entity.Core.EntityClient.EntityConnection(metadata.MetadataWorkspace, persistenceTransaction.Connection), false)
+            Rhetos.Dom.DefaultConcepts.Persistence.EntityFrameworkMetadata metadata
+        ) // EntityFrameworkConfiguration is provided as an IoC dependency for EntityFrameworkContext in order to initialize the global DbConfiguration before using DbContext.
+            : base()
         {
             Initialize();
             Database.UseTransaction(persistenceTransaction.Transaction);
@@ -124,72 +143,70 @@ namespace Rhetos.Dom.DefaultConcepts
         /// This constructor is used at deployment-time to create slow EntityFrameworkContext instance before the metadata files are generated.
         /// The instance is used by EntityFrameworkGenerateMetadataFiles to generate the metadata files.
         /// </summary>
-        protected EntityFrameworkContext(
-            System.Data.Common.DbConnection connection,
-            EntityFrameworkConfiguration configuration) // EntityFrameworkConfiguration is provided as an IoC dependency for EntityFrameworkContext in order to initialize the global DbConfiguration before using DbContext.
-            : base(connection, true)
-        {
-            Initialize();
-        }
+        //protected EntityFrameworkContext(
+        //    System.Data.Common.DbConnection connection,
+        //    EntityFrameworkConfiguration configuration) // EntityFrameworkConfiguration is provided as an IoC dependency for EntityFrameworkContext in order to initialize the global DbConfiguration before using DbContext.
+        //    : base(connection, true)
+        //{
+        //    Initialize();
+        //}
 
         private void Initialize()
         {
-            System.Data.Entity.Database.SetInitializer<EntityFrameworkContext>(null); // Prevent EF from creating database objects.
+            //System.Data.Entity.Database.SetInitializer<EntityFrameworkContext>(null); // Prevent EF from creating database objects.
 
             " + EntityFrameworkContextInitializeTag + @"
-
-            var objectContext = ((System.Data.Entity.Infrastructure.IObjectContextAdapter)this).ObjectContext;
-            objectContext.CommandTimeout = Rhetos.Utilities.SqlUtility.SqlCommandTimeout;
+            //Database.SetCommandTimeout = Rhetos.Utilities.SqlUtility.SqlCommandTimeout;
         }
 
         public void ClearCache()
         {
-            var objectContext = ((System.Data.Entity.Infrastructure.IObjectContextAdapter)this).ObjectContext;
+        //    var objectContext = ((System.Data.Entity.Infrastructure.IObjectContextAdapter)this).ObjectContext;
 
-            SetDetaching(true);
-            try
-            {
-                Configuration.AutoDetectChangesEnabled = false;
-                var trackedItems = ChangeTracker.Entries().ToList();
-                foreach (var item in trackedItems)
-                    objectContext.Detach(item.Entity);
-                Configuration.AutoDetectChangesEnabled = true;
-            }
-            finally
-            {
-                SetDetaching(false);
-            }
+        //    SetDetaching(true);
+        //    try
+        //    {
+        //        ChangeTracker.AutoDetectChangesEnabled = false;
+        //        var trackedItems = ChangeTracker.Entries().ToList();
+        //        foreach (var item in trackedItems)
+        //            objectContext.Detach(item.Entity);
+        //        ChangeTracker.AutoDetectChangesEnabled = true;
+        //    }
+        //    finally
+        //    {
+        //        SetDetaching(false);
+        //    }
         }
 
         public void ClearCache(object item)
         {
-            var objectContext = ((System.Data.Entity.Infrastructure.IObjectContextAdapter)this).ObjectContext;
-            System.Data.Entity.Core.Objects.ObjectStateEntry stateEntry;
-            bool isCached = objectContext.ObjectStateManager.TryGetObjectStateEntry(item, out stateEntry);
+        //    var objectContext = ((System.Data.Entity.Infrastructure.IObjectContextAdapter)this).ObjectContext;
+        //    System.Data.Entity.Core.Objects.ObjectStateEntry stateEntry;
+        //    bool isCached = objectContext.ObjectStateManager.TryGetObjectStateEntry(item, out stateEntry);
 
-            if (isCached)
-            {
-                SetDetaching(true);
-                try
-                {
-                    Configuration.AutoDetectChangesEnabled = false;
-                    objectContext.Detach(item);
-                    Configuration.AutoDetectChangesEnabled = true;
-                }
-                finally
-                {
-                    SetDetaching(false);
-                }
-            }
+        //    if (isCached)
+        //    {
+        //        SetDetaching(true);
+        //        try
+        //        {
+        //            ChangeTracker.AutoDetectChangesEnabled = false;
+        //            objectContext.Detach(item);
+        //            ChangeTracker.AutoDetectChangesEnabled = true;
+        //        }
+        //        finally
+        //        {
+        //            SetDetaching(false);
+        //        }
+        //    }
         }
 
         private void SetDetaching(bool detaching)
         {
-            foreach (var item in ChangeTracker.Entries().Select(entry => entry.Entity).OfType<IDetachOverride>())
-                item.Detaching = detaching;
+        //    foreach (var item in ChangeTracker.Entries().Select(entry => entry.Entity).OfType<IDetachOverride>())
+        //        item.Detaching = detaching;
         }
 
-        protected override void OnModelCreating(System.Data.Entity.DbModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             " + EntityFrameworkOnModelCreatingTag + @"
         }
@@ -197,17 +214,17 @@ namespace Rhetos.Dom.DefaultConcepts
         " + EntityFrameworkContextMembersTag + @"
     }
 
-    public class EntityFrameworkConfiguration : System.Data.Entity.DbConfiguration
-    {
-        public EntityFrameworkConfiguration()
-        {
-            SetProviderServices(""System.Data.SqlClient"", System.Data.Entity.SqlServer.SqlProviderServices.Instance);
+    //public class EntityFrameworkConfiguration : System.Data.Entity.DbConfiguration
+    //{
+    //    public EntityFrameworkConfiguration()
+    //    {
+    //        SetProviderServices(""System.Data.SqlClient"", System.Data.Entity.SqlServer.SqlProviderServices.Instance);
 
-            " + EntityFrameworkConfigurationTag + @"
+    //        " + EntityFrameworkConfigurationTag + @"
 
-            System.Data.Entity.DbConfiguration.SetConfiguration(this);
-        }
-    }
+    //        System.Data.Entity.DbConfiguration.SetConfiguration(this);
+    //    }
+    //}
 
     public static class Infrastructure
     {
@@ -301,6 +318,7 @@ namespace Rhetos.Dom.DefaultConcepts
             Lazy<Rhetos.Security.IWindowsSecurity> windowsSecurity" + ModuleCodeGenerator.ExecutionContextConstructorArgumentTag + @",
             EntityFrameworkContext entityFrameworkContext)
         {
+            Console.WriteLine(""Custom ExecutionContext"");
             _persistenceTransaction = persistenceTransaction;
             _userInfo = userInfo;
             _sqlExecuter = sqlExecuter;
@@ -314,23 +332,32 @@ namespace Rhetos.Dom.DefaultConcepts
         }
 
         // This constructor is used for manual context creation (unit testing)
-        public ExecutionContext()
-        {
-        }
+        //public ExecutionContext()
+        //{
+        //    Console.WriteLine(""Default ExecutionContext"");
+        //}
     }
 
-    [System.ComponentModel.Composition.Export(typeof(Autofac.Module))]
+    [System.Composition.Export(typeof(Autofac.Module))]
     public class AutofacModuleConfiguration : Autofac.Module
     {
         protected override void Load(Autofac.ContainerBuilder builder)
         {
+            Console.WriteLine(""AutofacModuleConfiguration serverdom loaded"");
+            Console.WriteLine(ConfigUtility.GetConnectionStringValue());
+
+            var services = new Microsoft.Extensions.DependencyInjection.ServiceCollection();
+            services.AddDbContext<EntityFrameworkContext>(
+                options => options.UseSqlServer(ConfigUtility.GetConnectionStringValue()));
+            builder.Populate(services);
             builder.RegisterType<DomRepository>().InstancePerLifetimeScope();
-            builder.RegisterType<EntityFrameworkConfiguration>().SingleInstance();
-            builder.RegisterType<EntityFrameworkContext>()
-                .As<EntityFrameworkContext>()
-                .As<System.Data.Entity.DbContext>()
-                .As<Rhetos.Persistence.IPersistenceCache>()
-                .InstancePerLifetimeScope();
+            //builder.RegisterType<EntityFrameworkConfiguration>().SingleInstance();
+
+            //builder.RegisterType<EntityFrameworkContext>()
+            //    .As<EntityFrameworkContext>()
+            //    .As<DbContext>()
+            //    .As<Rhetos.Persistence.IPersistenceCache>()
+            //    .InstancePerLifetimeScope();
             builder.RegisterType<ExecutionContext>().InstancePerLifetimeScope();
             builder.RegisterInstance(Infrastructure.RegisteredInterfaceImplementationName).ExternallyOwned();
             builder.RegisterInstance(Infrastructure.ApplyFiltersOnClientRead).ExternallyOwned();

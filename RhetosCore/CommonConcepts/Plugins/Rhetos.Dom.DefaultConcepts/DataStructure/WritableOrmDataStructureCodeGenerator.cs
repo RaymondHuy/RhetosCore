@@ -123,19 +123,19 @@ namespace Rhetos.Dom.DefaultConcepts
             {{
                 if (deletedIds.Count() > 0)
                 {{
-                    _executionContext.EntityFrameworkContext.Configuration.AutoDetectChangesEnabled = false;
+                    _executionContext.EntityFrameworkContext.ChangeTracker.AutoDetectChangesEnabled = false;
                     foreach (var item in deletedIds.Select(item => item.ToNavigation()))
-                        _executionContext.EntityFrameworkContext.Entry(item).State = System.Data.Entity.EntityState.Deleted;
-                    _executionContext.EntityFrameworkContext.Configuration.AutoDetectChangesEnabled = true;
+                        _executionContext.EntityFrameworkContext.Entry(item).State = EntityState.Deleted;
+                    _executionContext.EntityFrameworkContext.ChangeTracker.AutoDetectChangesEnabled = true;
                     _executionContext.EntityFrameworkContext.SaveChanges();
                 }}
 
                 if (updatedNew.Count() > 0)
                 {{
-                    _executionContext.EntityFrameworkContext.Configuration.AutoDetectChangesEnabled = false;
+                    _executionContext.EntityFrameworkContext.ChangeTracker.AutoDetectChangesEnabled = false;
                     foreach (var item in updatedNew.Select(item => item.ToNavigation()))
-                        _executionContext.EntityFrameworkContext.Entry(item).State = System.Data.Entity.EntityState.Modified;
-                    _executionContext.EntityFrameworkContext.Configuration.AutoDetectChangesEnabled = true;
+                        _executionContext.EntityFrameworkContext.Entry(item).State = EntityState.Modified;
+                    _executionContext.EntityFrameworkContext.ChangeTracker.AutoDetectChangesEnabled = true;
                     _executionContext.EntityFrameworkContext.SaveChanges();
                 }}
 
@@ -147,7 +147,7 @@ namespace Rhetos.Dom.DefaultConcepts
 
                 _executionContext.EntityFrameworkContext.ClearCache();
             }}
-            catch (System.Data.Entity.Infrastructure.DbUpdateException saveException)
+            catch (DbUpdateException saveException)
             {{
         		var interpretedException = _sqlUtility.InterpretSqlException(saveException);
         		" + OnDatabaseErrorTag.Evaluate(info) + @"

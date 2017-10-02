@@ -61,6 +61,7 @@ namespace Rhetos.Dom.DefaultConcepts.Persistence
 
         public void Generate()
         {
+            return;
             var sw = Stopwatch.StartNew();
 
             var connection = new SqlConnection(_connectionString);

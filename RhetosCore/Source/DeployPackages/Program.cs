@@ -18,6 +18,7 @@
 */
 
 using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using Rhetos;
 using Rhetos.Deployment;
 using Rhetos.Dom;
@@ -172,6 +173,7 @@ namespace DeployPackages
                 deployDatabaseOnly: arguments.DeployDatabaseOnly));
             using (var container = builder.Build())
             {
+                var serviceProvider = new AutofacServiceProvider(container);
                 var performanceLogger = container.Resolve<ILogProvider>().GetLogger("Performance");
                 performanceLogger.Write(stopwatch, "DeployPackages.Program: New modules and plugins registered.");
                 Plugins.LogRegistrationStatistics("Initializing application", container);
