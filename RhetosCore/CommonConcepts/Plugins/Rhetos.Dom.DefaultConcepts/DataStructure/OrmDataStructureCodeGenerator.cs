@@ -68,7 +68,7 @@ namespace Rhetos.Dom.DefaultConcepts
                 //    DomInitializationCodeGenerator.EntityFrameworkOnModelCreatingTag);
                 codeBuilder.InsertCode(
                     string.Format("modelBuilder.Ignore<global::{0}.{1}>();\r\n            "
-                        + "modelBuilder.Entity<Common.Queryable.{0}_{1}>().ToTable(\"{3}\");\r\n            ",
+                        + "modelBuilder.Entity<Common.Queryable.{0}_{1}>().ToTable(\"{3}\", \"{2}\");\r\n            ",
                         info.Module.Name, info.Name, orm.GetOrmSchema(), orm.GetOrmDatabaseObject()),
                     DomInitializationCodeGenerator.EntityFrameworkOnModelCreatingTag);
 

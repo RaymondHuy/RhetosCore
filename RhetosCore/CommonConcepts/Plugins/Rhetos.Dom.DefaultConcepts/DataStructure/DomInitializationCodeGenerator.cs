@@ -127,13 +127,14 @@ namespace Rhetos.Dom.DefaultConcepts
         " + ModuleCodeGenerator.CommonDomRepositoryMembersTag + @"
     }
 
-    public class EntityFrameworkContext : DbContext, Rhetos.Persistence.IPersistenceCache
+    public class EntityFrameworkContext : DbContext
     {
         public EntityFrameworkContext(
             Rhetos.Persistence.IPersistenceTransaction persistenceTransaction,
-            Rhetos.Dom.DefaultConcepts.Persistence.EntityFrameworkMetadata metadata
+            DbContextOptions<EntityFrameworkContext> options
+            //Rhetos.Dom.DefaultConcepts.Persistence.EntityFrameworkMetadata metadata
         ) // EntityFrameworkConfiguration is provided as an IoC dependency for EntityFrameworkContext in order to initialize the global DbConfiguration before using DbContext.
-            : base()
+            : base(options)
         {
             Initialize();
             Database.UseTransaction(persistenceTransaction.Transaction);
@@ -350,6 +351,9 @@ namespace Rhetos.Dom.DefaultConcepts
             services.AddDbContext<EntityFrameworkContext>(
                 options => options.UseSqlServer(ConfigUtility.GetConnectionStringValue()));
             builder.Populate(services);
+            //var container = builder.Build();
+            //var m = container.Resolve<EntityFrameworkContext>();
+            //Console.WriteLine(m);
             builder.RegisterType<DomRepository>().InstancePerLifetimeScope();
             //builder.RegisterType<EntityFrameworkConfiguration>().SingleInstance();
 

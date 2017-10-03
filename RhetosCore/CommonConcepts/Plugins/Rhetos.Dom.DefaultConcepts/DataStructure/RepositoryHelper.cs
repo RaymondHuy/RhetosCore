@@ -156,6 +156,7 @@ namespace Rhetos.Dom.DefaultConcepts
         {{
             if(_executionContext.EntityFrameworkContext == null)
                 Console.WriteLine(""EntityFrameworkContext is null"");
+            Console.WriteLine(""EntityFrameworkContext not null"");
             " + BeforeQueryTag.Evaluate(info) + @"
             " + queryFunctionBody + @"
         }}
