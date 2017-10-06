@@ -99,7 +99,9 @@ namespace Rhetos.Extensibility
 
             foreach (var assembly in assemblies)
             {
-                var types = assemblyReferences.Where(a => a.Location == assembly).FirstOrDefault().GetTypes();
+                var types = assemblyReferences.Where(a => a.Location == assembly).FirstOrDefault()?.GetTypes();
+                if (types == null)
+                    continue;
                 foreach (var type in types)
                 {
                     string contractName = String.Empty;

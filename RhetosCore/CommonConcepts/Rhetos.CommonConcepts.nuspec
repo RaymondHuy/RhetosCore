@@ -14,6 +14,7 @@
     <dependencies>
       <group targetFramework=".NETStandard1.3">
         <dependency id="NETStandard.Library" version="1.6.1" exclude="Build,Analyzers" />
+		<dependency id="Autofac.Extensions.DependencyInjection" version="4.2.0" exclude="Build,Analyzers" />
       </group>
     </dependencies>
   </metadata>

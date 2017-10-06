@@ -18,7 +18,6 @@
 */
 
 using Autofac;
-using Autofac.Extensions.DependencyInjection;
 using Rhetos;
 using Rhetos.Deployment;
 using Rhetos.Dom;

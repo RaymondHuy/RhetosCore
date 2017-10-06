@@ -37,6 +37,7 @@ using NuGet.PackageManagement;
 using NuGet.Resolver;
 using NuGet.ProjectManagement;
 using System.Threading;
+using NuGet.Frameworks;
 
 //Important
 namespace Rhetos.Deployment
@@ -76,12 +77,10 @@ namespace Rhetos.Deployment
         public List<InstalledPackage> GetPackages()
         {
             var sw = Stopwatch.StartNew();
-            var installedPackages = new List<InstalledPackage>();
+            var installedPackages = InstalledPackage.GetDefaultInstalledPackages();
             //installedPackages.Add(new InstalledPackage("Rhetos", SystemUtility.GetRhetosVersion(), new List<PackageRequest>(), Paths.RhetosServerRootPath,
             //    new PackageRequest { Id = "Rhetos", VersionsRange = "", Source = "", RequestedBy = "Rhetos framework" }, "."));
-            installedPackages.Add(new InstalledPackage("NETStandard.Library", "1.6.1", new List<PackageRequest>(), Paths.RhetosServerRootPath, null, "."));
-                //new PackageRequest { Id = ".NETStandard 1.3", VersionsRange = "", Source = "", RequestedBy = "Rhetos framework" }, "."));
-
+            
             var binFileSyncer = new FileSyncer(_logProvider);
             binFileSyncer.AddDestinations(Paths.PluginsFolder, Paths.ResourcesFolder); // Even if there are no packages, those folders must be created and emptied.
 
@@ -104,7 +103,7 @@ namespace Rhetos.Deployment
                 packageRequests = newDependencies;
             }
 
-            DeleteObsoletePackages(installedPackages);
+            //DeleteObsoletePackages(installedPackages);
 
             binFileSyncer.UpdateDestination();
 
@@ -130,7 +129,7 @@ namespace Rhetos.Deployment
             var existing = installedPackages.FirstOrDefault(op => string.Equals(op.Id, request.Id, StringComparison.OrdinalIgnoreCase));
             if (existing == null)
                 return false;
-            
+
             //var requestVersionsRange = NuGetVersion.Parse(request.VersionsRange);
             //var existingVersion = SemanticVersion.Parse(existing.Version);
             //requestVersionsRange.
@@ -304,7 +303,7 @@ namespace Rhetos.Deployment
         {
             var rhetosTargetFramework = SystemUtility.GetTargetFramework().FullName;
             var packageDependencySetOnDotNetStandard = package.DependencySets
-                .Where(p => p.TargetFramework.Framework.Equals(rhetosTargetFramework))
+                .Where(p => IsTargetDotNetStandard(p.TargetFramework))
                 .FirstOrDefault();
 
             if (packageDependencySetOnDotNetStandard == null)
@@ -445,11 +444,11 @@ namespace Rhetos.Deployment
             var logger = new LoggerForNuget();
 
             // Find the NuGet package:
-            var identity = new PackageIdentity(request.Id, NuGetVersion.Parse(request.VersionsRange));
+            var identity = new PackageIdentity(request.Id, VersionRange.Parse(request.VersionsRange).MinVersion);
 
             List<Lazy<INuGetResourceProvider>> providers = new List<Lazy<INuGetResourceProvider>>();
             providers.AddRange(Repository.Provider.GetCoreV3());  // Add v3 API support
-            
+
             ISettings settings = Settings.LoadDefaultSettings(null, null, new MachineWideSettings());
             ISourceRepositoryProvider sourceRepositoryProvider = new SourceRepositoryProvider(settings, providers);  // See part 2
 
@@ -467,22 +466,30 @@ namespace Rhetos.Deployment
 
             PackageMetadataResource packageMetadataResource = sourceRepository.GetResourceAsync<PackageMetadataResource>().GetAwaiter().GetResult();
             var package = packageMetadataResource.GetMetadataAsync(identity, logger, CancellationToken.None).GetAwaiter().GetResult();
-            
+
             if (package == null)
             {
                 _logger.Trace("Package " + request.ReportIdVersionsRange() + " not found by NuGet at " + source.ProcessedLocation + ".");
                 return null;
             }
+            using (var cacheContext = new SourceCacheContext())
+            {
+                using (var downloadResult = NuGet.PackageManagement.PackageDownloader.GetDownloadResourceResultAsync(
+                    sourceRepository,
+                    identity,
+                    new PackageDownloadContext(cacheContext),
+                    Paths.PackagesFolder,
+                    logger,
+                    CancellationToken.None).Result)
+                {
+                    if (downloadResult.Status == DownloadResourceResultStatus.Available)
+                    {
+                        var lib = GetAppropriateLibrary(downloadResult.PackageReader.GetLibItems());
+                        AddPluginDependeciesToAppContext(lib, identity, binFileSyncer);
+                    }
+                }
 
-            packageManager.InstallPackageAsync(
-                packageManager.PackagesFolderNuGetProject,
-                identity, 
-                resolutionContext, 
-                projectContext,
-                sourceRepository,
-                Array.Empty<SourceRepository>(),  // This is a list of secondary source respositories, probably empty
-                CancellationToken.None).Wait();
-
+            }
             //var nugetRepository = (source.Path != null && IsLocalPath(source.Path))
             //    ? new LocalPackageRepository(source.Path, enableCaching: false) // When developer rebuilds a package, the package version does not need to be increased every time.
             //    : PackageRepositoryFactory.Default.CreateRepository(source.ProcessedLocation);
@@ -578,6 +585,85 @@ namespace Rhetos.Deployment
 
             foreach (var folder in obsoletePackages)
                 _filesUtility.SafeDeleteDirectory(folder);
+        }
+
+        private void AddPluginDependeciesToAppContext(FrameworkSpecificGroup library, PackageIdentity package, FileSyncer fileSyncer)
+        {
+            //binFileSyncer.AddFile(Path.Combine(targetFolder, file.Path), Paths.PluginsFolder);
+            foreach (var item in library.Items)
+            {
+                if (item.Contains(".dll"))
+                {
+                    var source = Path.Combine(Paths.PackagesFolder, package.Id, package.Version.ToString(), item);
+                    var des = Path.Combine(Paths.PluginsFolder, package.Id + ".dll");
+                    fileSyncer.AddFile(source, Paths.PluginsFolder, package.Id + ".dll");
+                    //File.Copy(source, des, true);
+                    //assemblies.AddRange(Directory.GetFiles(path, "*.dll", SearchOption.AllDirectories));
+                }
+            }
+        }
+
+        private FrameworkSpecificGroup GetAppropriateLibrary(IEnumerable<FrameworkSpecificGroup> libs)
+        {
+            FrameworkSpecificGroup selectedLib = null;
+            foreach (var lib in libs)
+            {
+                switch (lib.TargetFramework.DotNetFrameworkName)
+                {
+                    case ".NETStandard,Version=v2.0":
+                        selectedLib = lib;
+                        break;
+                    case ".NETStandard,Version=v1.6":
+                        selectedLib = lib;
+                        break;
+                    case ".NETStandard,Version=v1.5":
+                        selectedLib = lib;
+                        break;
+                    case ".NETStandard,Version=v1.4":
+                        selectedLib = lib;
+                        break;
+                    case ".NETStandard,Version=v1.3":
+                        selectedLib = lib;
+                        break;
+                    case ".NETStandard,Version=v1.2":
+                        selectedLib = lib;
+                        break;
+                    case ".NETStandard,Version=v1.1":
+                        selectedLib = lib;
+                        break;
+                    case ".NETStandard,Version=v1.0":
+                        selectedLib = lib;
+                        break;
+                }
+                if (selectedLib != null)
+                    break;
+            }
+            return selectedLib;
+        }
+
+        private bool IsTargetDotNetStandard(NuGetFramework framework)
+        {
+            switch (framework.DotNetFrameworkName)
+            {
+                case ".NETStandard,Version=v2.0":
+                    return true;
+                case ".NETStandard,Version=v1.6":
+                    return true;
+                case ".NETStandard,Version=v1.5":
+                    return true;
+                case ".NETStandard,Version=v1.4":
+                    return true;
+                case ".NETStandard,Version=v1.3":
+                    return true;
+                case ".NETStandard,Version=v1.2":
+                    return true;
+                case ".NETStandard,Version=v1.1":
+                    return true;
+                case ".NETStandard,Version=v1.0":
+                    return true;
+                default:
+                    return false;
+            }
         }
     }
 }

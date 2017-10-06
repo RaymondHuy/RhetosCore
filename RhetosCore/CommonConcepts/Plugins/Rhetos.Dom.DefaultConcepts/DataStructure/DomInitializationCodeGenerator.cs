@@ -319,7 +319,6 @@ namespace Rhetos.Dom.DefaultConcepts
             Lazy<Rhetos.Security.IWindowsSecurity> windowsSecurity" + ModuleCodeGenerator.ExecutionContextConstructorArgumentTag + @",
             EntityFrameworkContext entityFrameworkContext)
         {
-            Console.WriteLine(""Custom ExecutionContext"");
             _persistenceTransaction = persistenceTransaction;
             _userInfo = userInfo;
             _sqlExecuter = sqlExecuter;
@@ -345,17 +344,12 @@ namespace Rhetos.Dom.DefaultConcepts
         protected override void Load(Autofac.ContainerBuilder builder)
         {
             Console.WriteLine(""AutofacModuleConfiguration serverdom loaded"");
-            Console.WriteLine(ConfigUtility.GetConnectionStringValue());
 
             var services = new Microsoft.Extensions.DependencyInjection.ServiceCollection();
             services.AddDbContext<EntityFrameworkContext>(
                 options => options.UseSqlServer(ConfigUtility.GetConnectionStringValue()));
             builder.Populate(services);
-            //var container = builder.Build();
-            //var m = container.Resolve<EntityFrameworkContext>();
-            //Console.WriteLine(m);
             builder.RegisterType<DomRepository>().InstancePerLifetimeScope();
-            //builder.RegisterType<EntityFrameworkConfiguration>().SingleInstance();
 
             //builder.RegisterType<EntityFrameworkContext>()
             //    .As<EntityFrameworkContext>()
