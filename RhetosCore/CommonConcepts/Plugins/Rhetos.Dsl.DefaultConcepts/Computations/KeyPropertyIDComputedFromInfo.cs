@@ -27,7 +27,7 @@ namespace Rhetos.Dsl.DefaultConcepts
 {
     [Export(typeof(IConceptInfo))]
     [ConceptKeyword("KeyPropertyID")]
-    public class KeyPropertyIDComputedFromInfo : IConceptInfo
+    public class KeyPropertyIDComputedFromInfo : IConceptInfo, IAlternativeInitializationConcept
     {
         [ConceptKey]
         public EntityComputedFromInfo EntityComputedFrom { get; set; }

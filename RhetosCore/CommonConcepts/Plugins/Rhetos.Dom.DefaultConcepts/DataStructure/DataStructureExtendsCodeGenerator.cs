@@ -53,7 +53,7 @@ namespace Rhetos.Dom.DefaultConcepts
 
             if (info.Extension is IOrmDataStructure && info.Base is IOrmDataStructure)
                 codeBuilder.InsertCode(
-                    string.Format("modelBuilder.Entity<Common.Queryable.{0}_{1}>().HasRequired(t => t.Base).WithOptional(t => t.{2});\r\n            ",
+                    string.Format("modelBuilder.Entity<Common.Queryable.{0}_{1}>().HasOne(t => t.Base).WithOne(t => t.{2});\r\n            ",
                         info.Extension.Module.Name, info.Extension.Name, extensionPropertyName),
                     DomInitializationCodeGenerator.EntityFrameworkOnModelCreatingTag);
             else if (info.Extension is IOrmDataStructure)
