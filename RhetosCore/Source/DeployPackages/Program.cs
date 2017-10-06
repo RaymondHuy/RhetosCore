@@ -40,7 +40,6 @@ namespace DeployPackages
             ILogger logger = new ConsoleLogger("DeployPackages"); // Using the simplest logger outside of try-catch block.
             string oldCurrentDirectory = null;
             Arguments arguments = null;
-            Console.ReadLine();
             try
             {
                 logger = DeploymentUtility.InitializationLogProvider.GetLogger("DeployPackages"); // Setting the final log provider inside the try-catch block, so that the simple ConsoleLogger can be used (see above) in case of an initialization error.
@@ -69,6 +68,7 @@ namespace DeployPackages
                 GenerateApplication(logger, arguments);
                 InitializeGeneratedApplication(logger, arguments);
                 logger.Trace("Done.");
+                Console.WriteLine("Done");
             }
             catch (Exception ex)
             {
