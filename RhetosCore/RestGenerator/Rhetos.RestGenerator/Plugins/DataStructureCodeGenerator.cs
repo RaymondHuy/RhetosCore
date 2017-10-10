@@ -28,7 +28,7 @@ namespace Rhetos.RestGenerator.Plugins
             return string.Format(@"
     
     [Route(""api/{0}/{1}"")]
-    [Authorize]
+    //[Authorize]
     public class {0}{1}Controller : Controller
     {{
         private ServiceUtility _serviceUtility;

@@ -29,6 +29,7 @@
     <ProjectReference Include="..\Rhetos.Security.Interfaces\Rhetos.Security.Interfaces.csproj" />
     <ProjectReference Include="..\Rhetos.Security\Rhetos.Security.csproj" />
     <ProjectReference Include="..\Rhetos.Utilities\Rhetos.Utilities.csproj" />
+    <ProjectReference Include="..\Rhetos.XmlSerialization\Rhetos.XmlSerialization.csproj" />
   </ItemGroup>
 
 </Project>

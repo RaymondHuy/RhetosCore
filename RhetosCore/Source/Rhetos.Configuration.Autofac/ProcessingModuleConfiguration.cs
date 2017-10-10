@@ -25,6 +25,7 @@ using Autofac;
 using Rhetos.Processing;
 using System.Diagnostics.Contracts;
 using Rhetos.Extensibility;
+using Rhetos.XmlSerialization;
 
 namespace Rhetos.Configuration.Autofac
 {
@@ -41,7 +42,7 @@ namespace Rhetos.Configuration.Autofac
         {
             if (!_deploymentTime)
             {
-                //builder.RegisterType<XmlDataTypeProvider>().As<IDataTypeProvider>().SingleInstance();
+                builder.RegisterType<XmlDataTypeProvider>().As<IDataTypeProvider>().SingleInstance();
                 builder.RegisterType<ProcessingEngine>().As<IProcessingEngine>();
                 Plugins.FindAndRegisterPlugins<ICommandData>(builder);
                 Plugins.FindAndRegisterPlugins<ICommandImplementation>(builder);

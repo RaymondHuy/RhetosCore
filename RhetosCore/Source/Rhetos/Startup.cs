@@ -12,6 +12,9 @@ using System.Reflection;
 using System.IO;
 using Rhetos.Utilities;
 using System.Runtime.Loader;
+using System.Diagnostics;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 
 namespace Rhetos
 {
@@ -25,19 +28,27 @@ namespace Rhetos
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            var plugins = Directory.GetFiles(@"D:\Project\Rhetos\RhetosCore\RhetosCore\Source\DeployPackages\bin\Debug\netcoreapp2.0\Plugins", "*.dll");
-            foreach (var item in plugins)
-            {
-                AssemblyLoadContext.Default.LoadFromAssemblyPath(item);
-            }
-            AssemblyLoadContext.Default.LoadFromAssemblyPath(@"D:\Project\Rhetos\RhetosCore\RhetosCore\Source\DeployPackages\bin\Debug\netcoreapp2.0\ServerDom.dll");
+            //AssemblyLoadContext.Default.LoadFromAssemblyPath(@"D:\Project\Rhetos\RhetosCore\RhetosCore\Source\DeployPackages\bin\Debug\netcoreapp2.0\ServerDom.dll");
             
-            var apiService = Assembly.LoadFile(@"D:\Project\Rhetos\RhetosCore\RhetosCore\Source\DeployPackages\bin\Debug\netcoreapp2.0\Generated\ApiService.dll");
+            var apiService = Assembly.LoadFile(@"D:\Project\Rhetos\RhetosCore\RhetosCore\Source\Rhetos\bin\Debug\netcoreapp2.0\Generated\ApiService.dll");
             services
                 .AddMvc()
                 .AddApplicationPart(apiService);
+
+
+            var stopwatch = Stopwatch.StartNew();
+
+            Paths.InitializeRhetosServerRootPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", ".."));
+            ConfigUtility.SetConfiguration("appsettings.json");
+
+            var builder = new ContainerBuilder();
+            builder.Populate(services);
+            builder.RegisterModule(new DefaultAutofacConfiguration());
+
+            var container = builder.Build();
+            return container.Resolve<IServiceProvider>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

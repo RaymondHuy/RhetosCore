@@ -41,7 +41,7 @@ namespace Rhetos.WebApiRest
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<ServiceUtility>().InstancePerRequest();
+            builder.RegisterType<ServiceUtility>().InstancePerLifetimeScope();
             //builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
             base.Load(builder);
         }
