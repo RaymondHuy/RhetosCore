@@ -1,0 +1,23 @@
+﻿<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Rhetos.RestGenerator</id>
+    <version>1.11.0-dev</version>
+    <authors>Omega software</authors>
+    <owners>Omega software</owners>
+    <licenseUrl>http://opensource.org/licenses/AGPL-3.0</licenseUrl>
+    <projectUrl>https://github.com/rhetos/rhetos</projectUrl>
+    <description>RestGenerator is a DSL package (a plugin module) for Rhetos development platform.
+      It automatically generates RESTful JSON web service for all entities, actions and other data structures that are defined in a Rhetos application.</description>
+    <copyright>Copyright Omega software 2015</copyright>
+    <tags>Rhetos plugin</tags>
+    <dependencies>
+      <group targetFramework=".NETStandard1.3">
+        <dependency id="NETStandard.Library" version="1.6.1" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="Rhetos.RestGenerator\bin\Debug\netcoreapp2.0\Rhetos.RestGenerator.dll" target="lib\netstandard1.3" />
+  </files>
+</package>
