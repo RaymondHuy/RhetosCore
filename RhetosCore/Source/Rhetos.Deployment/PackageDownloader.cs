@@ -83,8 +83,8 @@ namespace Rhetos.Deployment
             
             var binFileSyncer = new FileSyncer(_logProvider);
             binFileSyncer.AddDestinations(Paths.PluginsFolder, Paths.ResourcesFolder); // Even if there are no packages, those folders must be created and emptied.
+            DeleteOldPackageCacheAndPluginFolder();
 
-            _filesUtility.SafeCreateDirectory(Paths.PackagesFolder);
             var packageRequests = _deploymentConfiguration.PackageRequests;
             while (packageRequests.Count() > 0)
             {
@@ -113,6 +113,14 @@ namespace Rhetos.Deployment
 
             SortByDependencies(installedPackages);
             return installedPackages;
+        }
+
+        private void DeleteOldPackageCacheAndPluginFolder()
+        {
+            _filesUtility.SafeDeleteDirectory(Paths.PackagesFolder);
+            _filesUtility.SafeCreateDirectory(Paths.PackagesFolder);
+            _filesUtility.SafeDeleteDirectory(Paths.PluginsFolder);
+            _filesUtility.SafeCreateDirectory(Paths.PluginsFolder);
         }
 
         private static void SortByDependencies(List<InstalledPackage> installedPackages)

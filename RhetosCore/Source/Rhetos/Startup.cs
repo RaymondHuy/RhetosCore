@@ -30,8 +30,6 @@ namespace Rhetos
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            //AssemblyLoadContext.Default.LoadFromAssemblyPath(@"D:\Project\Rhetos\RhetosCore\RhetosCore\Source\DeployPackages\bin\Debug\netcoreapp2.0\ServerDom.dll");
-            
             var apiService = Assembly.LoadFile(@"D:\Project\Rhetos\RhetosCore\RhetosCore\Source\Rhetos\bin\Debug\netcoreapp2.0\Generated\ApiService.dll");
             services
                 .AddMvc()

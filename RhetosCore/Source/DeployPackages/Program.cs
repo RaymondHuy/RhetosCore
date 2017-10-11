@@ -57,8 +57,7 @@ namespace DeployPackages
                     Console.WriteLine("Press any key to continue . . .");
                     Console.ReadKey(true);
                 }
-
-                Paths.InitializeRhetosServerRootPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", ".."));
+                Paths.InitializeRhetosServerRootPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory));
 
                 oldCurrentDirectory = Directory.GetCurrentDirectory();
                 Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory);
