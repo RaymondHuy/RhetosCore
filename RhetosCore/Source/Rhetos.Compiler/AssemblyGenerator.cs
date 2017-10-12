@@ -70,15 +70,6 @@ namespace Rhetos.Compiler
                 syntaxTrees: new[] { tree },
                 references: metadataReferences
                 );
-                //references: new[]
-                //{
-                //    MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
-                //    MetadataReference.CreateFromFile(typeof(IQueryable).Assembly.Location),
-                //    MetadataReference.CreateFromFile(typeof(Enumerable).Assembly.Location),
-                //    MetadataReference.CreateFromFile(typeof(HashSet<int>).Assembly.Location),
-                //    MetadataReference.CreateFromFile(Assembly.Load("System.Runtime, Version=4.0.20.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a").Location)
-                //});
-
             using (var ddlStream = new MemoryStream())
             {
                 var pdbStream = new MemoryStream();
@@ -86,11 +77,10 @@ namespace Rhetos.Compiler
                 if (compileResult.Success)
                 {
                     File.WriteAllBytes(parameter.OutputAssemblyPath, ddlStream.ToArray());
-                    File.WriteAllBytes("ServerDom.pdb", pdbStream.ToArray());
+                    File.WriteAllBytes(parameter.OutputPdbPath, pdbStream.ToArray());
                 }
                 else throw new FrameworkException(ReportErrors(compileResult.Diagnostics.ToArray(), assemblySource.GeneratedCode, parameter.OutputAssemblyPath));
-
-                //compiledAssembly = Assembly.Load(stream.GetBuffer());
+                
             }
             //compilerParameters.ReferencedAssemblies.AddRange(assemblySource.RegisteredReferences.ToArray());
             //if (compilerParameters.WarningLevel == -1)
@@ -126,7 +116,7 @@ namespace Rhetos.Compiler
             //}
 
             //ReportWarnings(results, sourceFile);
-            
+
             //return results.CompiledAssembly;
             var serverDomAssembly = Assembly.LoadFrom(parameter.OutputAssemblyPath);
             return serverDomAssembly;

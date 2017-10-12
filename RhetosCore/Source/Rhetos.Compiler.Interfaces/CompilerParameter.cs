@@ -11,6 +11,8 @@ namespace Rhetos.Compiler.Interfaces
 
         public string OutputAssemblyPath { get; set; }
 
+        public string OutputPdbPath { get; set; }
+
         public string AssemblyName { get; set; }
     }
 }

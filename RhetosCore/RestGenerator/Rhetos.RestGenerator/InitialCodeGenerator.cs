@@ -4,6 +4,7 @@ using Rhetos.Dsl;
 using Microsoft.CSharp.RuntimeBinder;
 using System.IO;
 using System.Collections.Generic;
+using Rhetos.Utilities;
 
 namespace Rhetos.RestGenerator
 {
@@ -62,7 +63,7 @@ namespace Rhetos.WebApiRest
 }
 ";
 
-        private static readonly string _rootPath = AppDomain.CurrentDomain.BaseDirectory;
+        private static readonly string _rootPath = Paths.GeneratedFolder;
 
         public void GenerateCode(IConceptInfo conceptInfo, ICodeBuilder codeBuilder)
         {

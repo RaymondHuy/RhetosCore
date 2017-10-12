@@ -15,6 +15,7 @@ using System.Runtime.Loader;
 using System.Diagnostics;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Rhetos.Extensions;
 
 namespace Rhetos
 {
@@ -30,15 +31,11 @@ namespace Rhetos
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            var apiService = Assembly.LoadFile(@"D:\Project\Rhetos\RhetosCore\RhetosCore\Source\Rhetos\bin\Debug\netcoreapp2.0\Generated\ApiService.dll");
-            services
-                .AddMvc()
-                .AddApplicationPart(apiService);
+            Paths.InitializeRhetosServerRootPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory));
 
+            services.LoadRhetosPluginWebApi();
 
             var stopwatch = Stopwatch.StartNew();
-
-            Paths.InitializeRhetosServerRootPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", ".."));
             ConfigUtility.SetConfiguration("appsettings.json");
 
             var builder = new ContainerBuilder();

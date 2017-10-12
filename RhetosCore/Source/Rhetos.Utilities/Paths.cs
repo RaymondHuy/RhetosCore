@@ -101,6 +101,7 @@ namespace Rhetos.Utilities
         public static string BinFolder { get { return Path.Combine(RhetosServerRootPath); } }
         public static string GeneratedFolder { get { return Path.Combine(RhetosServerRootPath, "Generated"); } }
         public static string PluginsFolder { get { return Path.Combine(RhetosServerRootPath, "Plugins"); } }
+        public static string ExternalApiModulesFolder { get { return Path.Combine(RhetosServerRootPath, "ExternalApiModules"); } }
 
         public static string RhetosServerWebConfigFile { get { return Path.Combine(RhetosServerRootPath, "Web.config"); } }
         public static string DomAssemblyFile { get { return Path.Combine(RhetosServerRootPath, DomAssemblyName + ".dll"); } }

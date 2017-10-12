@@ -121,6 +121,8 @@ namespace Rhetos.Deployment
             _filesUtility.SafeCreateDirectory(Paths.PackagesFolder);
             _filesUtility.SafeDeleteDirectory(Paths.PluginsFolder);
             _filesUtility.SafeCreateDirectory(Paths.PluginsFolder);
+            _filesUtility.SafeCreateDirectory(Paths.ExternalApiModulesFolder);
+            _filesUtility.SafeCreateDirectory(Paths.ExternalApiModulesFolder);
         }
 
         private static void SortByDependencies(List<InstalledPackage> installedPackages)

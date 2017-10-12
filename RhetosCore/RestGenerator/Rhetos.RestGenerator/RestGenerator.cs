@@ -54,15 +54,12 @@ namespace Rhetos.RestGenerator
             _sourceLogger.Trace(assemblySource.GeneratedCode);
             CompilerParameter parameters = new CompilerParameter
             {
-                OutputAssemblyPath = Path.Combine(Paths.GeneratedFolder, assemblyName + ".dll"),
+                OutputAssemblyPath = Path.Combine(Paths.ExternalApiModulesFolder, assemblyName + ".dll"),
+                OutputPdbPath = Path.Combine(Paths.ExternalApiModulesFolder, assemblyName + ".pdb"),
                 Options = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary),
                 AssemblyName = assemblyName
             };
             _assemblyGenerator.Generate(assemblySource, parameters);
-
-            //string sourceFile = GetAssemblyPath();
-            //string destinationFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory + "ApiService.dll");
-            //File.Copy(sourceFile, destinationFile, true);
         }
 
         public IEnumerable<string> Dependencies

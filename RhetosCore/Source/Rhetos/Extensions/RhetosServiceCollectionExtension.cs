@@ -4,23 +4,24 @@ using Rhetos.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Rhetos.Extensions
 {
     public static class RhetosServiceCollectionExtension
     {
-        public static void AddRhetosPlugin(this IServiceCollection services)
+        public static void LoadRhetosPluginWebApi(this IServiceCollection services)
         {
-            var stopwatch = Stopwatch.StartNew();
-
-            Paths.InitializeRhetosServer();
-
-            var builder = new ContainerBuilder();
-            builder.RegisterModule(new DefaultAutofacConfiguration());
-            var container = builder.Build();
-            
+            var mvcBuilder = services.AddMvc();
+            var assemblies = Directory.GetFiles(Paths.ExternalApiModulesFolder, "*.dll", SearchOption.AllDirectories);
+            foreach (var item in assemblies)
+            {
+                var assembly = Assembly.LoadFile(item);
+                mvcBuilder.AddApplicationPart(assembly);
+            }
         }
     }
 }
