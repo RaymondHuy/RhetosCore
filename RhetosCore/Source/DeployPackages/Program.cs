@@ -67,7 +67,6 @@ namespace DeployPackages
                 GenerateApplication(logger, arguments);
                 InitializeGeneratedApplication(logger, arguments);
                 logger.Trace("Done.");
-                Console.WriteLine("Done");
             }
             catch (Exception ex)
             {

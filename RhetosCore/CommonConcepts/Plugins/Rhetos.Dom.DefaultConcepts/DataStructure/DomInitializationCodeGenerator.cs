@@ -330,12 +330,6 @@ namespace Rhetos.Dom.DefaultConcepts
             EntityFrameworkContext = entityFrameworkContext;
             " + ModuleCodeGenerator.ExecutionContextConstructorAssignmentTag + @"
         }
-
-        // This constructor is used for manual context creation (unit testing)
-        //public ExecutionContext()
-        //{
-        //    Console.WriteLine(""Default ExecutionContext"");
-        //}
     }
 
     [System.Composition.Export(typeof(Autofac.Module))]
@@ -343,8 +337,6 @@ namespace Rhetos.Dom.DefaultConcepts
     {
         protected override void Load(Autofac.ContainerBuilder builder)
         {
-            Console.WriteLine(""AutofacModuleConfiguration serverdom loaded"");
-
             var services = new Microsoft.Extensions.DependencyInjection.ServiceCollection();
             services.AddDbContext<EntityFrameworkContext>(
                 options => options.UseSqlServer(ConfigUtility.GetConnectionStringValue()));

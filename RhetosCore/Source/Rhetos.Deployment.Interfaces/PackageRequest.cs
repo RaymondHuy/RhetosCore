@@ -50,5 +50,16 @@ namespace Rhetos.Deployment
         {
             return Id + (VersionsRange != null ? " " + VersionsRange : " (version not specified)");
         }
+
+        public static PackageRequest DefaultPackageRequest()
+        {
+            return new PackageRequest()
+            {
+                Id = "Rhetos",
+                VersionsRange = "1.0.0",
+                Source = "Rhetos",
+                RequestedBy = "Rhetos"
+            };
+        }
     }
 }

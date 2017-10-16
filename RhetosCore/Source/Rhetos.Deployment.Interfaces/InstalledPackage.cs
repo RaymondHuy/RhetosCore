@@ -66,9 +66,9 @@ namespace Rhetos.Deployment
         public static List<InstalledPackage> GetDefaultInstalledPackages()
         {
             var installedPackages = new List<InstalledPackage>();
-            installedPackages.Add(new InstalledPackage("Autofac", "4.6.1", new List<PackageRequest>(), "", null, "."));
-            installedPackages.Add(new InstalledPackage("System.ComponentModel", "4.0.1", new List<PackageRequest>(), "", null, "."));
-            installedPackages.Add(new InstalledPackage("NETStandard.Library", "1.6.0", new List<PackageRequest>(), "", null, "."));
+            installedPackages.Add(new InstalledPackage("Autofac", "4.6.1", new List<PackageRequest>(), "", PackageRequest.DefaultPackageRequest(), "."));
+            installedPackages.Add(new InstalledPackage("System.ComponentModel", "4.0.1", new List<PackageRequest>(), "", PackageRequest.DefaultPackageRequest(), "."));
+            installedPackages.Add(new InstalledPackage("NETStandard.Library", "1.6.0", new List<PackageRequest>(), "", PackageRequest.DefaultPackageRequest(), "."));
 
             return installedPackages;
         }

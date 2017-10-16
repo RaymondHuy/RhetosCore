@@ -154,8 +154,6 @@ namespace Rhetos.Dom.DefaultConcepts
 
         public IQueryable<Common.Queryable.{0}_{1}> Query()
         {{
-            if(_executionContext.EntityFrameworkContext == null)
-                Console.WriteLine(""EntityFrameworkContext is null"");
             " + BeforeQueryTag.Evaluate(info) + @"
             " + queryFunctionBody + @"
         }}
