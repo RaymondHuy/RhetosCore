@@ -121,11 +121,12 @@ namespace Rhetos.RestGenerator.Plugins
 
             if (IsTypeSupported(info))
             {
-                //codeBuilder.InsertCode(ServiceRegistrationCodeSnippet(info), InitialCodeGenerator.ServiceRegistrationTag);
-                //codeBuilder.InsertCode(ServiceInitializationCodeSnippet(info), InitialCodeGenerator.ServiceInitializationTag);
                 codeBuilder.InsertCode(ServiceDefinitionCodeSnippet(info), InitialCodeGenerator.RhetosRestClassesTag);
                 codeBuilder.AddReferencesFromDependency(typeof(Rhetos.Processing.DefaultCommands.ReadCommandResult));
                 codeBuilder.AddReferencesFromDependency(typeof(Newtonsoft.Json.Linq.JToken));
+
+                if (info is IWritableOrmDataStructure)
+                    WritableOrmDataStructureCodeGenerator.GenerateCode(conceptInfo, codeBuilder);
             }
         }
     }

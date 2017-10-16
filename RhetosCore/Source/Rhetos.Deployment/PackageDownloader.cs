@@ -121,7 +121,7 @@ namespace Rhetos.Deployment
             _filesUtility.SafeCreateDirectory(Paths.PackagesFolder);
             _filesUtility.SafeDeleteDirectory(Paths.PluginsFolder);
             _filesUtility.SafeCreateDirectory(Paths.PluginsFolder);
-            _filesUtility.SafeCreateDirectory(Paths.ExternalApiModulesFolder);
+            _filesUtility.SafeDeleteDirectory(Paths.ExternalApiModulesFolder);
             _filesUtility.SafeCreateDirectory(Paths.ExternalApiModulesFolder);
         }
 

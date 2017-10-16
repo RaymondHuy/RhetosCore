@@ -16,7 +16,7 @@ namespace Rhetos.RestGenerator.Plugins
         private const string ImplementationCodeSnippet = @"
         [HttpPost]
         [Route("""")]
-        public InsertDataResult Insert{0}{1}({0}.{1} entity)
+        public InsertDataResult Insert{0}{1}([FromBody]{0}.{1} entity)
         {{
             if (Guid.Empty == entity.ID)
                 entity.ID = Guid.NewGuid();
@@ -26,8 +26,8 @@ namespace Rhetos.RestGenerator.Plugins
         }}
 
         [HttpPut]
-        [Route[""{{id}}""]]
-        public void Update{0}{1}(string id, {0}.{1} entity)
+        [Route(""{{id}}"")]
+        public void Update{0}{1}(string id, [FromBody]{0}.{1} entity)
         {{
             Guid guid;
             if (!Guid.TryParse(id, out guid))
@@ -41,7 +41,7 @@ namespace Rhetos.RestGenerator.Plugins
         }}
 
         [HttpDelete]
-        [Route[""{{id}}""]]
+        [Route(""{{id}}"")]
         public void Delete{0}{1}(string id)
         {{
             Guid guid;

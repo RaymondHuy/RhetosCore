@@ -79,6 +79,8 @@ namespace Rhetos.WebApiRest
             codeBuilder.AddReferencesFromDependency(typeof(System.Net.HttpStatusCode));
             codeBuilder.AddReferencesFromDependency(typeof(HashSet<>));
             codeBuilder.AddReferencesFromDependency(typeof(IEnumerable<>));
+            codeBuilder.AddReferencesFromDependency(typeof(Rhetos.Processing.ProcessingResult));
+            codeBuilder.AddReferencesFromDependency(typeof(Microsoft.AspNetCore.Mvc.FromBodyAttribute));
 
             foreach (var file in Directory.GetFiles(_rootPath, "ServerDom.dll", SearchOption.AllDirectories))
                 codeBuilder.AddReference(file);

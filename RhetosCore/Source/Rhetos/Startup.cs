@@ -16,6 +16,7 @@ using System.Diagnostics;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Rhetos.Extensions;
+using Microsoft.AspNetCore.Http;
 
 namespace Rhetos
 {
@@ -34,6 +35,7 @@ namespace Rhetos
             Paths.InitializeRhetosServerRootPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory));
 
             services.LoadRhetosPluginWebApi();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             var stopwatch = Stopwatch.StartNew();
             ConfigUtility.SetConfiguration("appsettings.json");
