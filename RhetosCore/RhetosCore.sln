@@ -77,7 +77,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rhetos.RestGenerator", "Res
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rhetos", "Source\Rhetos\Rhetos.csproj", "{20848BCA-BAE8-4D53-9309-E42B2475F3FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rhetos.XmlSerialization", "Source\Rhetos.XmlSerialization\Rhetos.XmlSerialization.csproj", "{96D50DA5-6DA5-40FE-B9E7-7F98AFB3438D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rhetos.XmlSerialization", "Source\Rhetos.XmlSerialization\Rhetos.XmlSerialization.csproj", "{96D50DA5-6DA5-40FE-B9E7-7F98AFB3438D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SecurityPlugins", "SecurityPlugins", "{B266EB82-1FCD-4F3E-B4E3-5923FDA79B72}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rhetos.AspNetFormsAuth", "AspNetFormsAuth\Plugins\Rhetos.AspNetFormsAuth\Rhetos.AspNetFormsAuth.csproj", "{0C83F1FE-C685-468D-AC36-9EBF29A1EADF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rhetos.AspNetFormsAuth.Interfaces", "AspNetFormsAuth\Plugins\Rhetos.AspNetFormsAuth.Interfaces\Rhetos.AspNetFormsAuth.Interfaces.csproj", "{AC1669CF-1B0A-4524-945A-390F4307AB81}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -217,6 +223,14 @@ Global
 		{96D50DA5-6DA5-40FE-B9E7-7F98AFB3438D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{96D50DA5-6DA5-40FE-B9E7-7F98AFB3438D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{96D50DA5-6DA5-40FE-B9E7-7F98AFB3438D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C83F1FE-C685-468D-AC36-9EBF29A1EADF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C83F1FE-C685-468D-AC36-9EBF29A1EADF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C83F1FE-C685-468D-AC36-9EBF29A1EADF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C83F1FE-C685-468D-AC36-9EBF29A1EADF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC1669CF-1B0A-4524-945A-390F4307AB81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC1669CF-1B0A-4524-945A-390F4307AB81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC1669CF-1B0A-4524-945A-390F4307AB81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC1669CF-1B0A-4524-945A-390F4307AB81}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -255,6 +269,8 @@ Global
 		{0CD30FCB-7ACD-4D6C-A92E-8CFAC649EA61} = {8FDA6D4D-8F38-4BCB-B151-1F4032A4549E}
 		{20848BCA-BAE8-4D53-9309-E42B2475F3FA} = {9122CE99-4F8B-4685-A040-9245801DFB60}
 		{96D50DA5-6DA5-40FE-B9E7-7F98AFB3438D} = {BEFE2B9E-2E5D-48B2-93C4-8E073F8101B8}
+		{0C83F1FE-C685-468D-AC36-9EBF29A1EADF} = {B266EB82-1FCD-4F3E-B4E3-5923FDA79B72}
+		{AC1669CF-1B0A-4524-945A-390F4307AB81} = {B266EB82-1FCD-4F3E-B4E3-5923FDA79B72}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C50D68D4-9966-4555-9DB6-9948779B3D90}
