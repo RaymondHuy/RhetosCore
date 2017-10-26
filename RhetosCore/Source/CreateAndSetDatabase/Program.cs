@@ -135,10 +135,12 @@ namespace CreateAndSetDatabase
 
             Console.WriteLine(@"Writing connection string in ""ConnectionString.json""");
             // set Rhetos to point to new database
+            
+            var template = File.ReadAllText("appsettings_template.json");
+            template = template.Replace("<ServerName>", serverName);
+            template = template.Replace("<DatabaseName>", dbName);
 
-            var serverConnectionString = new ServerConnectionString() { Value = rhetosConnectionString, Provider = "Rhetos.MsSql" };
-
-            File.WriteAllText("ConnectionString.json", JsonConvert.SerializeObject(new { ServerConnectionString = serverConnectionString }));
+            File.WriteAllText("appsettings.json", template);
         }
     }
 }
