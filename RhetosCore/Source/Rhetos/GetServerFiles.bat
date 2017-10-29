@@ -9,6 +9,7 @@ XCOPY /Y/D/R ..\..\Source\CreateAndSetDatabase\bin\%Config%\CreateAndSetDatabase
 XCOPY /Y/D/R ..\..\Source\CreateAndSetDatabase\bin\%Config%\CreateAndSetDatabase.deps.json bin\%Config%\publish || GOTO Error1
 XCOPY /Y/D/R ..\..\Source\CreateAndSetDatabase\bin\%Config%\CreateAndSetDatabase.runtimeconfig.dev.json bin\%Config%\publish || GOTO Error1
 XCOPY /Y/D/R ..\..\Source\CreateAndSetDatabase\bin\%Config%\CreateAndSetDatabase.runtimeconfig.json bin\%Config%\publish || GOTO Error1
+XCOPY /Y/D/R ..\..\Source\CreateAndSetDatabase\appsettings_template.json bin\%Config%\publish || GOTO Error1
 
 XCOPY /Y/D/R ..\..\Source\DeployPackages\bin\%Config%\DeployPackages.dll bin\%Config%\publish || GOTO Error1
 XCOPY /Y/D/R ..\..\Source\DeployPackages\bin\%Config%\DeployPackages.runtimeconfig.json bin\%Config%\publish || GOTO Error1
