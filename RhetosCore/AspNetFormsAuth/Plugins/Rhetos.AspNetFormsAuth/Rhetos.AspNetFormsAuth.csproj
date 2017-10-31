@@ -5,7 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -13,5 +15,5 @@
     <ProjectReference Include="..\..\..\Source\Rhetos.Utilities\Rhetos.Utilities.csproj" />
     <ProjectReference Include="..\Rhetos.AspNetFormsAuth.Interfaces\Rhetos.AspNetFormsAuth.Interfaces.csproj" />
   </ItemGroup>
-
+  
 </Project>

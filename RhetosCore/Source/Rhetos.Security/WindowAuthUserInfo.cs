@@ -35,10 +35,10 @@ namespace Rhetos.Security
             _performanceLogger = logProvider.GetLogger("Performance");
             _httpContextAccessor = httpContextAccessor;
 
+            _windowsIdentity = new Lazy<WindowsIdentity>(() => WindowsIdentity.GetCurrent());
             _isUserRecognized = new Lazy<bool>(() => InitIsUserRecognized());
             _userName = new Lazy<string>(() => InitUserName());
             _workstation = new Lazy<string>(() => windowsSecurity.GetClientWorkstation());
-            _windowsIdentity = new Lazy<WindowsIdentity>(() => InitWindowsIdentity());
         }
 
         private void CheckIfUserRecognized()
@@ -49,7 +49,7 @@ namespace Rhetos.Security
 
         private bool InitIsUserRecognized()
         {
-            if (_httpContextAccessor.HttpContext.User.Identity == null)
+            if (_windowsIdentity.Value == null)
             {
                 _logger.Trace("User identity not provided, ServiceSecurityContext.Current.WindowsIdentity is null.");
                 return false;
@@ -59,7 +59,7 @@ namespace Rhetos.Security
 
         private string InitUserName()
         {
-            string name = _httpContextAccessor.HttpContext.User.Identity.Name;
+            string name = _windowsIdentity.Value.Name;
             _logger.Trace(() => "User: " + name + ".");
             return name;
         }

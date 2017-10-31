@@ -1,0 +1,27 @@
+﻿<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Rhetos.AspNetFormsAuth</id>
+    <version>2.1.0-dev</version>
+    <authors>Omega software</authors>
+    <owners>Omega software</owners>
+    <licenseUrl>http://opensource.org/licenses/AGPL-3.0</licenseUrl>
+    <projectUrl>https://github.com/rhetos/rhetos</projectUrl>
+    <description>AspNetFormsAuth is a DSL package for Rhetos development platform.
+      It provides an implementation of ASP.NET forms authentication to Rhetos server applications.</description>
+    <copyright>Copyright Omega software 2015</copyright>
+    <tags>Rhetos plugin</tags>
+    <dependencies>
+      <group targetFramework=".NETStandard1.3">
+        <dependency id="NETStandard.Library" version="1.6.1" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="Readme.md" target="" />
+    <file src="Plugins\Rhetos.AspNetFormsAuth\bin\Debug\netcoreapp2.0\Rhetos.AspNetFormsAuth.dll" target="lib\netstandard1.3" />
+    <file src="Plugins\Rhetos.AspNetFormsAuth\bin\Debug\netcoreapp2.0\Rhetos.AspNetFormsAuth.pdb" target="lib\netstandard1.3" />
+    <file src="Plugins\Rhetos.AspNetFormsAuth\bin\Debug\netcoreapp2.0\Rhetos.AspNetFormsAuth.Interfaces.dll" target="lib\netstandard1.3" />
+    <file src="Plugins\Rhetos.AspNetFormsAuth\bin\Debug\netcoreapp2.0\Rhetos.AspNetFormsAuth.Interfaces.pdb" target="lib\netstandard1.3" />
+  </files>
+</package>

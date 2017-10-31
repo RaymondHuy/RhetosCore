@@ -174,6 +174,8 @@ namespace DeployPackages
                 Plugins.LogRegistrationStatistics("Initializing application", container);
 
                 container.Resolve<ApplicationInitialization>().ExecuteInitializers();
+
+                InitializeExternalDatabase(container);
             }
         }
 
@@ -184,6 +186,15 @@ namespace DeployPackages
             DeploymentUtility.WriteError(ex.GetType().Name + ": " + ExceptionsUtility.SafeFormatUserMessage(ex));
             Console.WriteLine();
             Console.WriteLine("See DeployPackages.log for more information on error. Enable TraceLog in DeployPackages.exe.config for even more details.");
+        }
+
+        private static void InitializeExternalDatabase(IContainer container)
+        {
+            var externalDbPlugins = container.Resolve<IEnumerable<IDatabaseInitializer>>();
+            foreach (var plugin in externalDbPlugins)
+            {
+                plugin.Initialize();
+            }
         }
     }
 }

@@ -55,7 +55,7 @@ namespace Rhetos
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseAuthentication();
             app.UseMvc();
         }
     }

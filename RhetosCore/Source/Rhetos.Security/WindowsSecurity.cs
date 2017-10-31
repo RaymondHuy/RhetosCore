@@ -18,7 +18,7 @@ namespace Rhetos.Security
 
         public bool IsBuiltInAdministrator(IWindowsUserInfo userInfo)
         {
-            return true;
+            return false;
         }
     }
 }
