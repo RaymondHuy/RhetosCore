@@ -55,6 +55,22 @@ namespace Rhetos
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseExceptionHandler(
+              builder =>
+                {
+                  builder.Run(
+                    async context =>
+                      {
+                        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                        context.Response.ContentType = "text/html";
+
+                        var error = context.Features.Get<IExceptionHandlerFeature>();
+                        if (error != null)
+                        {
+                          await context.Response.WriteAsync($"<h1>Error: {error.Error.Message}</h1>").ConfigureAwait(false);
+                        }
+                      });
+                });
             app.UseAuthentication();
             app.UseMvc();
         }
