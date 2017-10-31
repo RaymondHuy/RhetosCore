@@ -56,20 +56,24 @@ namespace Rhetos
                 app.UseDeveloperExceptionPage();
             }
             app.UseExceptionHandler(
-              builder =>
+                builder =>
                 {
-                  builder.Run(
+                    builder.Run(
                     async context =>
-                      {
+                    {
                         context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                        context.Response.ContentType = "text/html";
-
+                        context.Response.ContentType = "application/json";
                         var error = context.Features.Get<IExceptionHandlerFeature>();
-                        if (error != null)
+
+                        var response = new { message = error.Error.Message };
+
+                        var json = JsonConvert.SerializeObject(response, new JsonSerializerSettings
                         {
-                          await context.Response.WriteAsync($"<h1>Error: {error.Error.Message}</h1>").ConfigureAwait(false);
-                        }
-                      });
+                            ContractResolver = new CamelCasePropertyNamesContractResolver()
+                        });
+
+                        await context.Response.WriteAsync(json);
+                    });
                 });
             app.UseAuthentication();
             app.UseMvc();
