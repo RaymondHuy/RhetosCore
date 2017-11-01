@@ -13,7 +13,7 @@ namespace Rhetos.AspNetFormsAuth
     internal static class AccessControlDbMigrationScript
     {
         #region AspNetUsers
-        public static string AspNetUsers =
+        public static readonly string AspNetUsers =
             @"
             IF NOT EXISTS (SELECT * 
                            FROM INFORMATION_SCHEMA.TABLES 
@@ -45,7 +45,7 @@ namespace Rhetos.AspNetFormsAuth
             ";
         #endregion
         #region AspNetUserLogins
-        public static string AspNetUserLogins =
+        public static readonly string AspNetUserLogins =
             @"
             IF NOT EXISTS (SELECT * 
                            FROM INFORMATION_SCHEMA.TABLES 
@@ -75,7 +75,7 @@ namespace Rhetos.AspNetFormsAuth
             ";
         #endregion
         #region AspNetUserTokens
-        public static string AspNetUserTokens =
+        public static readonly string AspNetUserTokens =
             @"            
             IF NOT EXISTS (SELECT * 
                            FROM INFORMATION_SCHEMA.TABLES 
@@ -104,6 +104,22 @@ namespace Rhetos.AspNetFormsAuth
             
             END
             ";
+        #endregion
+        #region CreateAdminAccountInCommonPrincipal
+        public static readonly string CreateAdminAccountInCommonPrincipal = @"
+            IF EXISTS (SELECT * 
+                       FROM INFORMATION_SCHEMA.TABLES 
+                       WHERE TABLE_SCHEMA = 'Common' 
+                        AND TABLE_NAME = 'Principal') 
+            BEGIN
+                IF NOT EXISTS (SELECT * 
+                               FROM Common.Principal
+                               WHERE Name = 'admin')
+			    BEGIN
+			        INSERT INTO Common.Principal Values ('" + Guid.NewGuid().ToString() + @"', 'admin')
+			    END 
+            END
+        ";
         #endregion
     }
     public class AccessControlDbContextInitializer : IDatabaseInitializer
@@ -158,6 +174,8 @@ namespace Rhetos.AspNetFormsAuth
                 }
                 else
                     _logger.Write(EventType.Error, () => "Create Admin account failed: " + command.Errors.First().Description);
+                
+                _accessControlDbContext.Database.ExecuteSqlCommand(AccessControlDbMigrationScript.CreateAdminAccountInCommonPrincipal);
             }
         }
     }
