@@ -17,6 +17,10 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Rhetos.Extensions;
 using Microsoft.AspNetCore.Http;
+using System.Net;
+using Microsoft.AspNetCore.Diagnostics;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Rhetos
 {
@@ -51,10 +55,6 @@ namespace Rhetos
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
             app.UseExceptionHandler(
                 builder =>
                 {
@@ -75,6 +75,7 @@ namespace Rhetos
                         await context.Response.WriteAsync(json);
                     });
                 });
+
             app.UseAuthentication();
             app.UseMvc();
         }

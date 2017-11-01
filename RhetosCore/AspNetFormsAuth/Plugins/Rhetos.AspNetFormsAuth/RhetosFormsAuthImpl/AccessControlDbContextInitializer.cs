@@ -4,6 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using Rhetos.Logging;
+using Rhetos.Utilities;
+using Microsoft.AspNetCore.Identity;
 
 namespace Rhetos.AspNetFormsAuth
 {
@@ -106,13 +109,26 @@ namespace Rhetos.AspNetFormsAuth
     public class AccessControlDbContextInitializer : IDatabaseInitializer
     {
         private readonly AccessControlDbContext _accessControlDbContext;
-
-        public AccessControlDbContextInitializer(AccessControlDbContext accessControlDbContext)
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly ILogger _logger;
+        
+        public AccessControlDbContextInitializer(
+            AccessControlDbContext accessControlDbContext,
+            UserManager<IdentityUser> userManager,
+            ILogProvider logProvider)
         {
             _accessControlDbContext = accessControlDbContext;
+            _userManager = userManager;
+            _logger = logProvider.GetLogger("DeployPackages");
         }
 
-        public void Initialize()
+        public void InitializeAndMigrateData()
+        {
+            InitializeDatabase();
+            MigrateData();
+        }
+
+        private void InitializeDatabase()
         {
             using (var transaction = _accessControlDbContext.Database.BeginTransaction())
             {
@@ -121,6 +137,27 @@ namespace Rhetos.AspNetFormsAuth
                 _accessControlDbContext.Database.ExecuteSqlCommand(new RawSqlString(AccessControlDbMigrationScript.AspNetUserLogins));
 
                 transaction.Commit();
+            }
+        }
+
+        private void MigrateData()
+        {
+            var runAdminAccountMigration = ConfigUtility.GetPluginSetting<bool>("RhetosAspNetFormsAuth", "RunAdminAccountMigration", AspNetFormsAuthDefaultSetting.RUN_ADMIN_ACCOUNT_MIGRATION);
+
+            if (runAdminAccountMigration)
+            {
+                var password = ConfigUtility.GetPluginSetting<string>("RhetosAspNetFormsAuth", "AdminPassword", AspNetFormsAuthDefaultSetting.ADMIN_PASSWORD);
+                var email = ConfigUtility.GetPluginSetting<string>("RhetosAspNetFormsAuth", "AdminEmail", AspNetFormsAuthDefaultSetting.ADMIN_EMAIL);
+                var user = new IdentityUser() { UserName = "admin", Email = email };
+
+                var command = _userManager.CreateAsync(user, password).Result;
+
+                if (command.Succeeded)
+                {
+                    _logger.Write(EventType.Trace, () => "Created Admin with email: " + email);
+                }
+                else
+                    _logger.Write(EventType.Error, () => "Create Admin account failed: " + command.Errors.First().Description);
             }
         }
     }

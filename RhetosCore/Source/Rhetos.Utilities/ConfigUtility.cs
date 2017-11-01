@@ -63,5 +63,11 @@ namespace Rhetos.Utilities
         {
             return Configuration.GetValue<string>(ServerConnectionStringName + ":Value");
         }
+
+        public static T GetPluginSetting<T>(string pluginName, string path, T defaultValue)
+        {
+            var value = Configuration.GetValue<T>(pluginName + ":" + path);
+            return value != null ? value : defaultValue;
+        }
     }
 }

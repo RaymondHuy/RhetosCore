@@ -10,6 +10,6 @@ namespace Rhetos.Extensibility
     /// </summary>
     public interface IDatabaseInitializer
     {
-        void Initialize();
+        void InitializeAndMigrateData();
     }
 }

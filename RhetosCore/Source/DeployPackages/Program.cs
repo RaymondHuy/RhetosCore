@@ -193,7 +193,7 @@ namespace DeployPackages
             var externalDbPlugins = container.Resolve<IEnumerable<IDatabaseInitializer>>();
             foreach (var plugin in externalDbPlugins)
             {
-                plugin.Initialize();
+                plugin.InitializeAndMigrateData();
             }
         }
     }

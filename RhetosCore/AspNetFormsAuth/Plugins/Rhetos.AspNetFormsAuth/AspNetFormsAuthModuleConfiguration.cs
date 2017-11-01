@@ -20,11 +20,9 @@ namespace Rhetos.AspNetFormsAuth
     {
         protected override void Load(ContainerBuilder builder)
         {
-            Console.WriteLine("Loaded AspNetFormsAuthModuleConfiguration");
             var services = new ServiceCollection();
 
             services.AddDbContext<AccessControlDbContext>(
-                //options => options.UseSqlServer("Data Source = (local); Initial Catalog = TestContext; Integrated Security = SSPI; "));
                 options => options.UseSqlServer(ConfigUtility.GetConnectionStringValue()));
 
             services.AddIdentity<IdentityUser, IdentityRole>()
@@ -32,19 +30,24 @@ namespace Rhetos.AspNetFormsAuth
                     .AddDefaultTokenProviders()
                     .AddClaimsPrincipalFactory<RhetosUserClaimPrincipalFactory>();
 
-            //services.Configure<IdentityOptions>(options =>
-            //{
-            //    // Lockout settings: disable lock out
-            //    options.Lockout.MaxFailedAccessAttempts = int.MaxValue;
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Lockout settings: disable lock out
+                options.Lockout.MaxFailedAccessAttempts = ConfigUtility.GetPluginSetting<int>("RhetosAspNetFormsAuth", "MaxFailedAccessAttempts", AspNetFormsAuthDefaultSetting.LOCKOUT_MAX_FAILED_ACCESS_ATTEMPTS);
+                options.SignIn.RequireConfirmedEmail = ConfigUtility.GetPluginSetting<bool>("RhetosAspNetFormsAuth", "RequireConfirmedEmail", AspNetFormsAuthDefaultSetting.SIGIN_IN_REQUIRE_CONFIRMED_EMAIL);
                 
-            //    // User settings
-            //    options.User.RequireUniqueEmail = true;
+                // User settings
+                options.User.RequireUniqueEmail = ConfigUtility.GetPluginSetting<bool>("RhetosAspNetFormsAuth", "RequireUniqueEmail", AspNetFormsAuthDefaultSetting.USER_REQUIRE_UNIQUE_EMAIL); ;
+                options.User.AllowedUserNameCharacters = ConfigUtility.GetPluginSetting<string>("RhetosAspNetFormsAuth", "AllowedUserNameCharacters", AspNetFormsAuthDefaultSetting.USER_ALLOWED_USERNAME_CHARACTERS); ;
 
-            //    options.Password.RequireUppercase = false;
-            //    options.Password.RequireNonAlphanumeric = false;
-            //    options.Password.RequireLowercase = false;
-            //    options.Password.RequiredLength = 4;
-            //});
+                // Password settings
+                options.Password.RequireUppercase = ConfigUtility.GetPluginSetting<bool>("RhetosAspNetFormsAuth", "RequireUppercase", AspNetFormsAuthDefaultSetting.PASSWORD_REQUIRE_UPPER_CASE); ;
+                options.Password.RequireNonAlphanumeric = ConfigUtility.GetPluginSetting<bool>("RhetosAspNetFormsAuth", "RequireNonAlphanumeric", AspNetFormsAuthDefaultSetting.PASSWORD_REQUIRE_NON_ALPHANUMERIC); ;
+                options.Password.RequireLowercase = ConfigUtility.GetPluginSetting<bool>("RhetosAspNetFormsAuth", "RequireLowercase", AspNetFormsAuthDefaultSetting.PASSWORD_REQUIRE_LOWER_CASE); ;
+                options.Password.RequiredLength = ConfigUtility.GetPluginSetting<int>("RhetosAspNetFormsAuth", "RequiredLength", AspNetFormsAuthDefaultSetting.PASSWORD_REQUIRED_LENGTH); ;
+                options.Password.RequireDigit = ConfigUtility.GetPluginSetting<bool>("RhetosAspNetFormsAuth", "RequireDigit", AspNetFormsAuthDefaultSetting.PASSWORD_REQUIRED_DIGITS); ;
+                options.Password.RequiredUniqueChars = ConfigUtility.GetPluginSetting<int>("RhetosAspNetFormsAuth", "RequiredUniqueChars", AspNetFormsAuthDefaultSetting.PASSWORD_REQUIRED_UNIQUE_CHARS); ;
+            });
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
 
